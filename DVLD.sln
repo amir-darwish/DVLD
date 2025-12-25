@@ -5,11 +5,11 @@ VisualStudioVersion = 17.14.36212.18 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD", "DVLD.csproj", "{0122BBEC-67AD-4343-903C-14F8B958E956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_BusinessLayer", "..\DVLD_BusinessLayer\DVLD_BusinessLayer.csproj", "{4AE1617F-ED07-4564-A2FC-4699EC8A0672}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_BusinessLayer", "DVLD_BusinessLayer\DVLD_BusinessLayer.csproj", "{4AE1617F-ED07-4564-A2FC-4699EC8A0672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_DataAccessLayer", "..\DVLD_DataAccessLayer\DVLD_DataAccessLayer.csproj", "{A6C2216F-1680-42DE-BA8C-565D4E91CACF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_DataAccessLayer", "DVLD_DataAccessLayer\DVLD_DataAccessLayer.csproj", "{A6C2216F-1680-42DE-BA8C-565D4E91CACF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_Console_Test", "..\DVLD_Console_Test\DVLD_Console_Test.csproj", "{48F3DEF7-BF9D-47B2-AB8F-01B7828B2992}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DVLD_Console_Test", "DVLD_Console_Test\DVLD_Console_Test.csproj", "{48F3DEF7-BF9D-47B2-AB8F-01B7828B2992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
