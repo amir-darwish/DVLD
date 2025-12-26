@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,13 +97,22 @@ namespace DVLD_Console_Test
                 }
 
         }
+        static void GetAllPersons()
+        {
+            DataTable persons = clsPerson.GetAllPersons();
+            foreach (DataRow row in persons.Rows)
+            {
+                Console.WriteLine($"Person ID: {row["PersonID"]}, National No: {row["NationalNo"]}, First Name: {row["FirstName"]}, Gender : {row["Gender"]}");
+            }
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("hi");
             //testGetPersonByID(1);
             //testAddNewPerson();
             //testUpdatePerson(1);
-            testDeletePerson(1033);
+            //testDeletePerson(1033);
+            GetAllPersons();
         }
     }
 }

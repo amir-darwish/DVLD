@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DVLD_DataAccessLayer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using DVLD_DataAccessLayer;
 
 namespace DVLD_BusinessLayer
 {
@@ -134,6 +135,11 @@ namespace DVLD_BusinessLayer
         public static bool DeletePerson(int PersonID)
         {
             return clsPersonData.DeletePerson(PersonID);
+        }
+
+        public static DataTable GetAllPersons()
+        {
+            return clsPersonData.GetAllPersons();
         }
     }
 }

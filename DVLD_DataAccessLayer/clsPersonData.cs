@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -307,6 +308,34 @@ namespace DVLD_DataAccessLayer
                 }
                 return (rowsAffected > 0);
             }
+        }
+
+        public static DataTable GetAllPersons()
+        {
+            DataTable personsTable = new DataTable();
+            using (SqlConnection connection = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                string query = "SELECT * FROM People_View";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            personsTable.Load(reader);
+                        }
+                        reader.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log error
+                        
+                    }
+                }
+            }
+            return personsTable;
         }
     }
 
