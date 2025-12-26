@@ -44,10 +44,10 @@ namespace DVLD_BusinessLayer
             this.NationalityCountryID = -1;
             this.ImagePath = "";
 
-            Mode = enMode.AddNew; 
+            Mode = enMode.AddNew;
         }
 
-       // for method find
+        // for method find
         private clsPerson(int PersonID, string NationalNo, string FirstName, string SecondName,
             string ThirdName, string LastName, DateTime DateOfBirth, byte Gender,
             string Address, string Phone, string Email, int NationalityCountryID, string ImagePath)
@@ -79,17 +79,61 @@ namespace DVLD_BusinessLayer
          ref ThirdName, ref LastName, ref DateOfBirth, ref Gender, ref Address, ref Phone,
          ref Email, ref NationalityCountryID, ref ImagePath))
             {
-                // 3. إذا وجدنا البيانات، نعيد كائناً جديداً باستخدام الكونستركتور الخاص (Private Constructor)
+                // if we found person we return object
                 return new clsPerson(PersonID, NationalNo, FirstName, SecondName, ThirdName, LastName,
                     DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath);
             }
             else
             {
-                // 4. إذا لم نجد الشخص، نعيد null
                 return null;
             }
         }
 
+        private bool _AddNewPerson()
+        {
+            this.PersonID = clsPersonData.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
+                this.ThirdName, this.LastName, this.DateOfBirth, this.Gender, this.Address, this.Phone, this.Email,
+                this.NationalityCountryID, this.ImagePath);
 
+            return this.PersonID != -1;
+        }
+
+        private bool _UpdatePerson()
+        {
+            return clsPersonData.UpdatePerson(this.PersonID, this.NationalNo, this.FirstName, this.SecondName,
+                this.ThirdName, this.LastName, this.DateOfBirth, this.Gender, this.Address, this.Phone, this.Email,
+                              this.NationalityCountryID, this.ImagePath);
+        }
+
+        public bool Save()
+        {
+            switch (Mode)
+            {
+                case enMode.AddNew:
+                   
+                    if (clsPersonData.IsPersonExist(this.NationalNo))
+                    {
+                       
+                        return false;
+                    }
+
+                    if (_AddNewPerson())
+                    {
+                        Mode = enMode.Update;
+                        return true;
+                    }else
+                    {
+                        return false;
+                    }
+
+                    case enMode.Update:
+                        return _UpdatePerson();
+            }
+            return false;
+        }
+        public static bool DeletePerson(int PersonID)
+        {
+            return clsPersonData.DeletePerson(PersonID);
+        }
     }
 }

@@ -35,11 +35,74 @@ namespace DVLD_Console_Test
                 Console.WriteLine($"Image Path: {person.ImagePath}");
 
             }
+
+        }
+        static void testAddNewPerson()
+        {
+            clsPerson newPerson = new clsPerson();
+            newPerson.NationalNo = "N11";
+            newPerson.FirstName = "John";
+            newPerson.SecondName = "Doe";
+            newPerson.ThirdName = "M";
+            newPerson.LastName = "Smith";
+            newPerson.DateOfBirth = new DateTime(1990, 1, 1);
+            newPerson.Gender = 1;
+            newPerson.Address = "123 Main St";
+            newPerson.Phone = "555-1234";
+            newPerson.Email = "nwq!@mail.xom";
+            newPerson.NationalityCountryID = 1;
+            bool isAdded = newPerson.Save();
+            if (isAdded)
+            {
+                Console.WriteLine("New person added with ID: " + newPerson.PersonID);
+            }
+            else
+            {
+                Console.WriteLine("Failed to add new person.");
+            }
+        }
+        static void testUpdatePerson(int id)
+        {
+            clsPerson personToUpdate = clsPerson.Find(id);
+            if (personToUpdate != null)
+            {
+                personToUpdate.Phone = "555-5678";
+                personToUpdate.Address = "456 Elm St";
+                bool isUpdated = personToUpdate.Save();
+                if (isUpdated)
+                {
+                    Console.WriteLine("Person updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update person.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Person not found.");
+            }
+        }
+        static void testDeletePerson(int id)
+        {
+
+            if (clsPerson.DeletePerson(id))
+                {
+                    Console.WriteLine("Person deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to delete person.");
+                }
+
         }
         static void Main(string[] args)
         {
             Console.WriteLine("hi");
-            testGetPersonByID(1);
+            //testGetPersonByID(1);
+            //testAddNewPerson();
+            //testUpdatePerson(1);
+            testDeletePerson(1033);
         }
     }
 }
