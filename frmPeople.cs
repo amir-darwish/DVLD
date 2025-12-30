@@ -13,6 +13,7 @@ namespace DVLD
 {
     public partial class frmPeople : Form
     {
+        private static DataTable _dtAllPeople;
         public frmPeople()
         {
             InitializeComponent();
@@ -20,9 +21,13 @@ namespace DVLD
 
         private void frmPeople_Load(object sender, EventArgs e)
         {
-            dgvPeople.DataSource = clsPerson.GetAllPersons();
+            _dtAllPeople = clsPerson.GetAllPersons();
 
-           
+            dgvPeople.DataSource = _dtAllPeople;
+
+            lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
+
+            // Customize DataGridView appearance
             dgvPeople.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(197, 203, 232);
             dgvPeople.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
 
@@ -47,6 +52,48 @@ namespace DVLD
         private void picGroupePeople_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbFillterBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbFilterBy_TextChanged(object sender, EventArgs e)
+        {
+            //switch (cbFillterBy.SelectedIndex)
+            //{
+            //    case 0:
+            //        dgvPeople.Row
+            //    case 1:
+            //        dgvPeople.DataSource = clsPerson.SearchPersonsByLastName(txtbFilterBy.Text);
+            //        break;
+            //    case 2:
+            //        dgvPeople.DataSource = clsPerson.SearchPersonsByNationalNo(txtbFilterBy.Text);
+            //        break;
+            //    default:
+            //        dgvPeople.DataSource = clsPerson.GetAllPersons();
+            //        break;
+            //}
+        }
+
+        private void txtbFilterBy_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (cbFillterBy.SelectedIndex == 0 || cbFillterBy.SelectedIndex == 6 )
+            {
+
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                    (e.KeyChar != '.'))
+                {
+                    e.Handled = true;
+                }
+
+                // only allow one decimal point
+                if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+                {
+                    e.Handled = true;
+                }
+            }
         }
     }
 }
