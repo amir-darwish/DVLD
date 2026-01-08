@@ -108,7 +108,7 @@ namespace DVLD_Console_Test
         static void Main(string[] args)
         {
             Console.WriteLine("hi");
-            //testGetPersonByID(1);
+            testGetPersonByID(1);
             //testAddNewPerson();
             //testUpdatePerson(1);
             //testDeletePerson(1033);

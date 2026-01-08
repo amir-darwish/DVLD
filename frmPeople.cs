@@ -61,25 +61,77 @@ namespace DVLD
 
         private void txtbFilterBy_TextChanged(object sender, EventArgs e)
         {
-            //switch (cbFillterBy.SelectedIndex)
-            //{
-            //    case 0:
-            //        dgvPeople.Row
-            //    case 1:
-            //        dgvPeople.DataSource = clsPerson.SearchPersonsByLastName(txtbFilterBy.Text);
-            //        break;
-            //    case 2:
-            //        dgvPeople.DataSource = clsPerson.SearchPersonsByNationalNo(txtbFilterBy.Text);
-            //        break;
-            //    default:
-            //        dgvPeople.DataSource = clsPerson.GetAllPersons();
-            //        break;
-            //}
+            string FilterColumn = "";
+
+            switch (cbFillterBy.Text)
+            {
+                case "Person ID":
+                    FilterColumn = "PersonID";
+                    break;
+
+                case "National No.":
+                    FilterColumn = "NationalNo";
+                    break;
+
+                case "First Name":
+                    FilterColumn = "FirstName";
+                    break;
+
+                case "Second Name":
+                    FilterColumn = "SecondName";
+                    break;
+
+                case "Third Name":
+                    FilterColumn = "ThirdName";
+                    break;
+
+                case "Last Name":
+                    FilterColumn = "LastName";
+                    break;
+
+                case "Nationality":
+                    FilterColumn = "CountryName"; 
+                    break;
+
+                case "Gender":
+                    FilterColumn = "Gender"; 
+                    break;
+
+                case "Phone":
+                    FilterColumn = "Phone";
+                    break;
+
+                case "Email":
+                    FilterColumn = "Email";
+                    break;
+
+                default:
+                    FilterColumn = "None";
+                    break;
+            }
+
+            if (txtbFilterBy.Text.Trim() == "" || FilterColumn == "None")
+            {
+                _dtAllPeople.DefaultView.RowFilter = "";
+                lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
+                return;
+            }
+
+            if (FilterColumn == "Phone" || FilterColumn == "PersonID")
+            {
+                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, txtbFilterBy.Text.Trim());
+            }
+            else
+            {
+                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, txtbFilterBy.Text.Trim());
+            }
+
+            lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
         }
 
         private void txtbFilterBy_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cbFillterBy.SelectedIndex == 0 || cbFillterBy.SelectedIndex == 6 )
+            if (cbFillterBy.Text == "Person ID" || cbFillterBy.Text == "Phone")
             {
 
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
