@@ -19,11 +19,16 @@ namespace DVLD
             InitializeComponent();
         }
 
-        private void frmPeople_Load(object sender, EventArgs e)
+        private void Initialize_dgv()
         {
             _dtAllPeople = clsPerson.GetAllPersons();
 
             dgvPeople.DataSource = _dtAllPeople;
+
+            if(dgvPeople.Columns.Contains("ImagePath"))
+            {
+                dgvPeople.Columns["ImagePath"].Visible = false;
+            }
 
             lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
 
@@ -31,22 +36,29 @@ namespace DVLD
             dgvPeople.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(197, 203, 232);
             dgvPeople.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
 
-            
+
             dgvPeople.DefaultCellStyle.BackColor = Color.White;
             dgvPeople.DefaultCellStyle.ForeColor = Color.Black;
             dgvPeople.DefaultCellStyle.SelectionBackColor = Color.FromArgb(110, 120, 180);
             dgvPeople.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            
+
             dgvPeople.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(63, 81, 181);
             dgvPeople.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvPeople.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            dgvPeople.ColumnHeadersHeight = 35; 
+            dgvPeople.ColumnHeadersHeight = 35;
 
-            
+
             dgvPeople.GridColor = Color.FromArgb(231, 229, 255);
-            dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default; 
+            dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgvPeople.ReadOnly = true;
+            
+        }
+
+        private void frmPeople_Load(object sender, EventArgs e)
+        {
+            Initialize_dgv();
+            txtbFilterBy.Visible = false;
         }
 
         private void picGroupePeople_Click(object sender, EventArgs e)
@@ -56,7 +68,16 @@ namespace DVLD
 
         private void cbFillterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            txtbFilterBy.Visible = cbFillterBy.Text != "None";
+            if (!txtbFilterBy.Visible)
+            {
+               if (_dtAllPeople != null)
+                {
+                    _dtAllPeople.DefaultView.RowFilter = string.Empty;
+                }
+                txtbFilterBy.Text = string.Empty;
+                lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
+            } 
         }
 
         private void txtbFilterBy_TextChanged(object sender, EventArgs e)
