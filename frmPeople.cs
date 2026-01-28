@@ -168,5 +168,11 @@ namespace DVLD
                 }
             }
         }
+
+        private void btnAddNewPeson_Click(object sender, EventArgs e)
+        {
+            Form addPersonForm = new frmAddNewPerson();
+            addPersonForm.ShowDialog();
+        }
     }
 }

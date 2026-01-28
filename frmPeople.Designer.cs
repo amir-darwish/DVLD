@@ -41,6 +41,7 @@
             this.cbFillterBy = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.lbRecord = new System.Windows.Forms.Label();
+            this.btnAddNewPeson = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPeople)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGroupePeople)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -86,7 +87,7 @@
             this.dgvPeople.RowHeadersVisible = false;
             this.dgvPeople.RowHeadersWidth = 51;
             this.dgvPeople.RowTemplate.Height = 30;
-            this.dgvPeople.Size = new System.Drawing.Size(1271, 560);
+            this.dgvPeople.Size = new System.Drawing.Size(1109, 560);
             this.dgvPeople.TabIndex = 0;
             this.dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Dark;
             this.dgvPeople.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(48)))), ((int)(((byte)(52)))));
@@ -226,11 +227,29 @@
             this.lbRecord.TabIndex = 6;
             this.lbRecord.Text = "Record :";
             // 
+            // btnAddNewPeson
+            // 
+            this.btnAddNewPeson.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnAddNewPeson.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnAddNewPeson.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnAddNewPeson.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnAddNewPeson.FillColor = System.Drawing.Color.Transparent;
+            this.btnAddNewPeson.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddNewPeson.ForeColor = System.Drawing.Color.White;
+            this.btnAddNewPeson.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewPeson.Image")));
+            this.btnAddNewPeson.ImageSize = new System.Drawing.Size(40, 40);
+            this.btnAddNewPeson.Location = new System.Drawing.Point(1042, 167);
+            this.btnAddNewPeson.Name = "btnAddNewPeson";
+            this.btnAddNewPeson.Size = new System.Drawing.Size(79, 51);
+            this.btnAddNewPeson.TabIndex = 7;
+            this.btnAddNewPeson.Click += new System.EventHandler(this.btnAddNewPeson_Click);
+            // 
             // frmPeople
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1295, 830);
+            this.ClientSize = new System.Drawing.Size(1133, 830);
+            this.Controls.Add(this.btnAddNewPeson);
             this.Controls.Add(this.lbRecord);
             this.Controls.Add(this.lblRecordsCount);
             this.Controls.Add(this.label1);
@@ -261,5 +280,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblRecordsCount;
         private System.Windows.Forms.Label lbRecord;
+        private Guna.UI2.WinForms.Guna2Button btnAddNewPeson;
     }
 }
