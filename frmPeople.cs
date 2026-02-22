@@ -25,7 +25,7 @@ namespace DVLD
 
             dgvPeople.DataSource = _dtAllPeople;
 
-            if(dgvPeople.Columns.Contains("ImagePath"))
+            if (dgvPeople.Columns.Contains("ImagePath"))
             {
                 dgvPeople.Columns["ImagePath"].Visible = false;
             }
@@ -52,7 +52,7 @@ namespace DVLD
             dgvPeople.GridColor = Color.FromArgb(231, 229, 255);
             dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgvPeople.ReadOnly = true;
-            
+
         }
 
         private void frmPeople_Load(object sender, EventArgs e)
@@ -71,13 +71,13 @@ namespace DVLD
             txtbFilterBy.Visible = cbFillterBy.Text != "None";
             if (!txtbFilterBy.Visible)
             {
-               if (_dtAllPeople != null)
+                if (_dtAllPeople != null)
                 {
                     _dtAllPeople.DefaultView.RowFilter = string.Empty;
                 }
                 txtbFilterBy.Text = string.Empty;
                 lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
-            } 
+            }
         }
 
         private void txtbFilterBy_TextChanged(object sender, EventArgs e)
@@ -111,11 +111,11 @@ namespace DVLD
                     break;
 
                 case "Nationality":
-                    FilterColumn = "CountryName"; 
+                    FilterColumn = "CountryName";
                     break;
 
                 case "Gender":
-                    FilterColumn = "Gender"; 
+                    FilterColumn = "Gender";
                     break;
 
                 case "Phone":
@@ -173,6 +173,49 @@ namespace DVLD
         {
             Form addPersonForm = new frmAddNewPerson();
             addPersonForm.ShowDialog();
+        }
+
+        private void dgvPeople_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                dgvPeople.ClearSelection();
+                dgvPeople.Rows[e.RowIndex].Selected = true;
+                dgvPeople.CurrentCell = dgvPeople.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            }
+        }
+
+
+        private void tEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvPeople.SelectedRows.Count > 0)
+            {
+                int personID = Convert.ToInt32(dgvPeople.SelectedRows[0].Cells["PersonID"].Value);
+                Form editPersonForm = new frmAddNewPerson(personID);
+                editPersonForm.ShowDialog();
+            }
+        }
+        private void tDelete_Click(object sender, EventArgs e)
+        {
+
+            if (dgvPeople.SelectedRows.Count > 0)
+            {
+                if (MessageBox.Show("Are you sure you want to delete this person?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    int personID = Convert.ToInt32(dgvPeople.SelectedRows[0].Cells["PersonID"].Value);
+                    if (clsPerson.DeletePerson(personID))
+                    {
+                        MessageBox.Show("Person deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Initialize_dgv();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the person. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                
+            }
         }
     }
 }

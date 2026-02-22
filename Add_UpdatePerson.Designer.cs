@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Add_UpdatePerson));
             this.lbAdd_Update_Person = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2GroupBox1 = new Guna.UI2.WinForms.Guna2GroupBox();
@@ -35,6 +36,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSave = new Guna.UI2.WinForms.Guna2Button();
+            this.lbSetImage = new System.Windows.Forms.LinkLabel();
             this.pbProfile = new System.Windows.Forms.PictureBox();
             this.txtbAddress = new Guna.UI2.WinForms.Guna2TextBox();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
@@ -69,6 +72,9 @@
             this.First = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.guna2GroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -82,6 +88,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
             // 
             // lbAdd_Update_Person
@@ -142,6 +150,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSave);
+            this.groupBox1.Controls.Add(this.lbSetImage);
             this.groupBox1.Controls.Add(this.pbProfile);
             this.groupBox1.Controls.Add(this.txtbAddress);
             this.groupBox1.Controls.Add(this.pictureBox10);
@@ -178,16 +188,43 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(896, 314);
+            this.groupBox1.Size = new System.Drawing.Size(1286, 612);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // btnSave
+            // 
+            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(366, 323);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(157, 40);
+            this.btnSave.TabIndex = 33;
+            this.btnSave.Text = "Save";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click_1);
+            // 
+            // lbSetImage
+            // 
+            this.lbSetImage.AutoSize = true;
+            this.lbSetImage.Location = new System.Drawing.Point(670, 271);
+            this.lbSetImage.Name = "lbSetImage";
+            this.lbSetImage.Size = new System.Drawing.Size(87, 23);
+            this.lbSetImage.TabIndex = 32;
+            this.lbSetImage.TabStop = true;
+            this.lbSetImage.Text = "Set Image";
+            this.lbSetImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbSetImage_LinkClicked);
             // 
             // pbProfile
             // 
             this.pbProfile.Image = ((System.Drawing.Image)(resources.GetObject("pbProfile.Image")));
             this.pbProfile.InitialImage = null;
-            this.pbProfile.Location = new System.Drawing.Point(653, 86);
+            this.pbProfile.Location = new System.Drawing.Point(658, 86);
             this.pbProfile.Name = "pbProfile";
             this.pbProfile.Size = new System.Drawing.Size(232, 165);
             this.pbProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -248,7 +285,6 @@
             this.cbCountry.Name = "cbCountry";
             this.cbCountry.Size = new System.Drawing.Size(148, 36);
             this.cbCountry.TabIndex = 27;
-            this.cbCountry.SelectedIndexChanged += new System.EventHandler(this.cbCountry_SelectedIndexChanged);
             // 
             // pictureBox9
             // 
@@ -289,7 +325,7 @@
             this.txtbEmail.SelectedText = "";
             this.txtbEmail.Size = new System.Drawing.Size(178, 29);
             this.txtbEmail.TabIndex = 24;
-            this.txtbEmail.TextChanged += new System.EventHandler(this.guna2TextBox1_TextChanged);
+            this.txtbEmail.Validating += new System.ComponentModel.CancelEventHandler(this.txtbEmail_Validating);
             // 
             // txtbPhone
             // 
@@ -440,6 +476,7 @@
             this.txtbNantionalNo.SelectedText = "";
             this.txtbNantionalNo.Size = new System.Drawing.Size(178, 29);
             this.txtbNantionalNo.TabIndex = 14;
+            this.txtbNantionalNo.Validating += new System.ComponentModel.CancelEventHandler(this.txtbNantionalNo_Validating);
             // 
             // pictureBox4
             // 
@@ -461,7 +498,6 @@
             this.label6.Size = new System.Drawing.Size(128, 23);
             this.label6.TabIndex = 12;
             this.label6.Text = "Date Of Birth :";
-            this.label6.Click += new System.EventHandler(this.label5_Click);
             // 
             // pictureBox3
             // 
@@ -483,7 +519,6 @@
             this.label5.Size = new System.Drawing.Size(116, 23);
             this.label5.TabIndex = 12;
             this.label5.Text = "National No :";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // txtbLast
             // 
@@ -573,7 +608,6 @@
             this.label2.Size = new System.Drawing.Size(66, 23);
             this.label2.TabIndex = 6;
             this.label2.Text = "Second";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtbFirst
             // 
@@ -625,6 +659,18 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Name :";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Add_UpdatePerson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -635,8 +681,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Add_UpdatePerson";
-            this.Size = new System.Drawing.Size(1087, 723);
-            this.Load += new System.EventHandler(this.Add_UpdatePerson_Load);
+            this.Size = new System.Drawing.Size(1259, 762);
             this.guna2GroupBox1.ResumeLayout(false);
             this.guna2GroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -652,6 +697,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -699,5 +746,10 @@
         private Guna.UI2.WinForms.Guna2ComboBox cbCountry;
         private System.Windows.Forms.PictureBox pbProfile;
         private Guna.UI2.WinForms.Guna2TextBox txtbAddress;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.LinkLabel lbSetImage;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private Guna.UI2.WinForms.Guna2Button btnSave;
     }
 }

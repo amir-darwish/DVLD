@@ -33,6 +33,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPeople));
             this.dgvPeople = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.Edit = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
+            this.tEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.picGroupePeople = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -43,6 +46,7 @@
             this.lbRecord = new System.Windows.Forms.Label();
             this.btnAddNewPeson = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPeople)).BeginInit();
+            this.Edit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGroupePeople)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +74,7 @@
             this.dgvPeople.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvPeople.ColumnHeadersHeight = 30;
             this.dgvPeople.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            this.dgvPeople.ContextMenuStrip = this.Edit;
             this.dgvPeople.Cursor = System.Windows.Forms.Cursors.IBeam;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
@@ -111,6 +116,39 @@
             this.dgvPeople.ThemeStyle.RowsStyle.Height = 30;
             this.dgvPeople.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(117)))), ((int)(((byte)(119)))));
             this.dgvPeople.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvPeople.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPeople_CellMouseDown);
+            // 
+            // Edit
+            // 
+            this.Edit.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.Edit.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tEdit,
+            this.tDelete});
+            this.Edit.Name = "Edit";
+            this.Edit.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
+            this.Edit.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
+            this.Edit.RenderStyle.ColorTable = null;
+            this.Edit.RenderStyle.RoundedEdges = true;
+            this.Edit.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
+            this.Edit.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.Edit.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.Edit.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.Edit.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.Edit.Size = new System.Drawing.Size(264, 100);
+            // 
+            // tEdit
+            // 
+            this.tEdit.Name = "tEdit";
+            this.tEdit.Size = new System.Drawing.Size(210, 24);
+            this.tEdit.Text = "Edit";
+            this.tEdit.Click += new System.EventHandler(this.tEdit_Click);
+            // 
+            // tDelete
+            // 
+            this.tDelete.Name = "tDelete";
+            this.tDelete.Size = new System.Drawing.Size(210, 24);
+            this.tDelete.Text = "Delete";
+            this.tDelete.Click += new System.EventHandler(this.tDelete_Click);
             // 
             // picGroupePeople
             // 
@@ -260,6 +298,7 @@
             this.Text = "Manage People";
             this.Load += new System.EventHandler(this.frmPeople_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPeople)).EndInit();
+            this.Edit.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picGroupePeople)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -281,5 +320,8 @@
         private System.Windows.Forms.Label lblRecordsCount;
         private System.Windows.Forms.Label lbRecord;
         private Guna.UI2.WinForms.Guna2Button btnAddNewPeson;
+        private Guna.UI2.WinForms.Guna2ContextMenuStrip Edit;
+        private System.Windows.Forms.ToolStripMenuItem tEdit;
+        private System.Windows.Forms.ToolStripMenuItem tDelete;
     }
 }

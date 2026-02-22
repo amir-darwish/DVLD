@@ -111,10 +111,10 @@ namespace DVLD_BusinessLayer
             switch (Mode)
             {
                 case enMode.AddNew:
-                   
+
                     if (clsPersonData.IsPersonExist(this.NationalNo))
                     {
-                       
+
                         return false;
                     }
 
@@ -122,13 +122,14 @@ namespace DVLD_BusinessLayer
                     {
                         Mode = enMode.Update;
                         return true;
-                    }else
+                    }
+                    else
                     {
                         return false;
                     }
 
-                    case enMode.Update:
-                        return _UpdatePerson();
+                case enMode.Update:
+                    return _UpdatePerson();
             }
             return false;
         }
@@ -140,6 +141,11 @@ namespace DVLD_BusinessLayer
         public static DataTable GetAllPersons()
         {
             return clsPersonData.GetAllPersons();
+        }
+
+        public static bool IsPersonExist(string NationalNo)
+        {
+            return clsPersonData.IsPersonExist(NationalNo);
         }
     }
 }

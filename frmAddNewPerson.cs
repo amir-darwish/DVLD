@@ -17,9 +17,20 @@ namespace DVLD
             InitializeComponent();
         }
 
+        public frmAddNewPerson(int personID)
+        {
+            InitializeComponent();
+            add_UpdatePerson1.LoadPersonData(personID);
+        }
+
         private void add_UpdatePerson1_Load(object sender, EventArgs e)
         {
             
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }
