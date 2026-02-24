@@ -217,5 +217,13 @@ namespace DVLD
                 
             }
         }
+
+        private void tShowDetails_Click(object sender, EventArgs e)
+        {
+            int personID = Convert.ToInt32(dgvPeople.SelectedRows[0].Cells["PersonID"].Value);
+            Form frm = new frmShowPersonInfo(personID);
+            frm.ShowDialog();
+
+        }
     }
 }

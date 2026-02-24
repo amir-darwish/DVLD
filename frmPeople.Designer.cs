@@ -45,6 +45,7 @@
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.lbRecord = new System.Windows.Forms.Label();
             this.btnAddNewPeson = new Guna.UI2.WinForms.Guna2Button();
+            this.tShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPeople)).BeginInit();
             this.Edit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGroupePeople)).BeginInit();
@@ -123,7 +124,8 @@
             this.Edit.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Edit.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tEdit,
-            this.tDelete});
+            this.tDelete,
+            this.tShowDetails});
             this.Edit.Name = "Edit";
             this.Edit.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
             this.Edit.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
@@ -134,7 +136,7 @@
             this.Edit.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.Edit.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.Edit.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.Edit.Size = new System.Drawing.Size(264, 100);
+            this.Edit.Size = new System.Drawing.Size(211, 104);
             // 
             // tEdit
             // 
@@ -282,6 +284,13 @@
             this.btnAddNewPeson.TabIndex = 7;
             this.btnAddNewPeson.Click += new System.EventHandler(this.btnAddNewPeson_Click);
             // 
+            // tShowDetails
+            // 
+            this.tShowDetails.Name = "tShowDetails";
+            this.tShowDetails.Size = new System.Drawing.Size(210, 24);
+            this.tShowDetails.Text = "Show Details";
+            this.tShowDetails.Click += new System.EventHandler(this.tShowDetails_Click);
+            // 
             // frmPeople
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -323,5 +332,6 @@
         private Guna.UI2.WinForms.Guna2ContextMenuStrip Edit;
         private System.Windows.Forms.ToolStripMenuItem tEdit;
         private System.Windows.Forms.ToolStripMenuItem tDelete;
+        private System.Windows.Forms.ToolStripMenuItem tShowDetails;
     }
 }

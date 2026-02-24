@@ -147,5 +147,9 @@ namespace DVLD_BusinessLayer
         {
             return clsPersonData.IsPersonExist(NationalNo);
         }
+        public string GetFullName()
+        {
+            return FirstName + " " + SecondName + " " + ThirdName + " " + LastName;
+        }
     }
 }
