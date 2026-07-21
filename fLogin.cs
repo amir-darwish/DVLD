@@ -92,27 +92,36 @@ namespace DVLD
             });
         }
 
-        private void DeleteLoginInfo()
-        {
-            if (File.Exists(LoginInfoPath))
-                File.Delete(LoginInfoPath);
-        }
 
         private void Login(bool showErrorMessage)
         {
-            clsPerson user = clsUser.ValidateUser(tbUsername.Text, tbPassword.Text);
+            clsUser user = clsUser.ValidateUser(tbUsername.Text, tbPassword.Text);
 
             if (user != null)
             {
                 if (cbRememberMe.Checked)
-                    SaveLoginInfo();
-                else
-                    DeleteLoginInfo();
-                clsGlobal.SignIn(user);
+                {
+                   SaveLoginInfo();
+                }
+                    
+
+
                 this.Hide();
+                clsGlobal.SignIn(user);
                 Form mainForm = new fWelcome();
                 mainForm.ShowDialog();
-                this.Close();
+                if (clsGlobal.IsLoggedIn())
+                {
+                  this.Close();
+                } else
+                {
+                   tbUsername.Clear();
+                   tbPassword.Clear();
+                   cbRememberMe.Checked = false;
+                   this.Show();
+                   tbUsername.Focus();
+                }
+                
             }
             else
             {

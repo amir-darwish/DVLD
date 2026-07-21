@@ -33,15 +33,15 @@
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             this.guna2ContainerControl1 = new Guna.UI2.WinForms.Guna2ContainerControl();
             this.btnSettings = new Guna.UI2.WinForms.Guna2Button();
-            this.btnUsers = new Guna.UI2.WinForms.Guna2Button();
-            this.btnPeople = new Guna.UI2.WinForms.Guna2Button();
-            this.btnApplications = new Guna.UI2.WinForms.Guna2Button();
-            this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
             this.contextMenuStrip_Settings = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.currentUserInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnUsers = new Guna.UI2.WinForms.Guna2Button();
+            this.btnPeople = new Guna.UI2.WinForms.Guna2Button();
+            this.btnApplications = new Guna.UI2.WinForms.Guna2Button();
+            this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
             this.guna2ContainerControl1.SuspendLayout();
             this.contextMenuStrip_Settings.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,42 @@
             this.btnSettings.Text = "Settings";
             this.btnSettings.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // contextMenuStrip_Settings
+            // 
+            this.contextMenuStrip_Settings.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip_Settings.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.currentUserInfoToolStripMenuItem,
+            this.changePasswordToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.logoutToolStripMenuItem});
+            this.contextMenuStrip_Settings.Name = "contextMenuStrip_Settings";
+            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(211, 110);
+            // 
+            // currentUserInfoToolStripMenuItem
+            // 
+            this.currentUserInfoToolStripMenuItem.Name = "currentUserInfoToolStripMenuItem";
+            this.currentUserInfoToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.currentUserInfoToolStripMenuItem.Text = "Current User Info";
+            this.currentUserInfoToolStripMenuItem.Click += new System.EventHandler(this.currentUserInfoToolStripMenuItem_Click);
+            // 
+            // changePasswordToolStripMenuItem
+            // 
+            this.changePasswordToolStripMenuItem.Name = "changePasswordToolStripMenuItem";
+            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.changePasswordToolStripMenuItem.Text = "Change Password";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // logoutToolStripMenuItem
+            // 
+            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
             // 
             // btnUsers
             // 
@@ -171,41 +207,6 @@
             this.btnDrivers.Text = "Drivers";
             this.btnDrivers.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnDrivers.Click += new System.EventHandler(this.btnDrivers_Click);
-            // 
-            // contextMenuStrip_Settings
-            // 
-            this.contextMenuStrip_Settings.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip_Settings.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.currentUserInfoToolStripMenuItem,
-            this.changePasswordToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.logoutToolStripMenuItem});
-            this.contextMenuStrip_Settings.Name = "contextMenuStrip_Settings";
-            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(243, 103);
-            // 
-            // currentUserInfoToolStripMenuItem
-            // 
-            this.currentUserInfoToolStripMenuItem.Name = "currentUserInfoToolStripMenuItem";
-            this.currentUserInfoToolStripMenuItem.Size = new System.Drawing.Size(193, 24);
-            this.currentUserInfoToolStripMenuItem.Text = "Current User Info";
-            this.currentUserInfoToolStripMenuItem.Click += new System.EventHandler(this.currentUserInfoToolStripMenuItem_Click);
-            // 
-            // changePasswordToolStripMenuItem
-            // 
-            this.changePasswordToolStripMenuItem.Name = "changePasswordToolStripMenuItem";
-            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(193, 24);
-            this.changePasswordToolStripMenuItem.Text = "Change Password";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(239, 6);
-            // 
-            // logoutToolStripMenuItem
-            // 
-            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(193, 24);
-            this.logoutToolStripMenuItem.Text = "Logout";
             // 
             // fWelcome
             // 

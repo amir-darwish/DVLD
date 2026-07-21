@@ -86,8 +86,15 @@ namespace DVLD
 
         private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmShowPersonInfo currentUser = new frmShowPersonInfo(clsGlobal.CurrentUser.PersonID);
+            frmShowUserInfo currentUser = new frmShowUserInfo(clsGlobal.CurrentUser);
             currentUser.ShowDialog();
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            clsGlobal.SignOut();
+            this.Close();
+           
         }
     }
 }

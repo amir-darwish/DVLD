@@ -11,25 +11,36 @@ namespace DVLD_DataAccessLayer
     {
         public clsUserData() { }
 
-        public static int ValidateUser(string username, string password)
+        public static bool ValidateUser(string username, string password, 
+        ref int userID,
+        ref int personID,
+        ref string userName,
+        ref bool isActive)
         {
             // Return the PersonID if the user is valid and active, otherwise return -1
             using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
             {
                 conn.Open();
-                string query = "SELECT PersonID FROM Users WHERE Username = @Username AND Password = @Password AND isActive = 1";
+                string query = "SELECT * FROM Users WHERE Username = @Username AND Password = @Password AND isActive = 1";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     cmd.Parameters.AddWithValue("@Password", password);
-                    object result = cmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        return Convert.ToInt32(result);
+                        if (reader.Read())
+                        {
+                            userID = (int)reader["UserID"];
+                            personID = (int)reader["PersonID"];
+                            userName = (string)reader["UserName"];
+                            isActive = (bool)reader["IsActive"];
+                            return true;
+                        }
                     }
                 }
             }
-            return -1;
+            return false;
         }
 
         public static bool CreateUser(int PersonID, string username, string password)

@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using DVLD_BusinessLayer;
 
 namespace DVLD
 {
     internal static class clsGlobal
     {
-        public static clsPerson CurrentUser { get; private set; }
+        private static readonly string LoginInfoPath = @"C:\Users\Utilisateur\Desktop\DVLD\_login.txt";
+        public static clsUser CurrentUser { get; private set; }
 
-        public static void SignIn(clsPerson user)
+        public static void SignIn(clsUser user)
         {
             if (user == null)
             {
@@ -24,7 +22,15 @@ namespace DVLD
         }
         public static void SignOut()
         {
+
             CurrentUser = null;
+            DeleteLoginInfo();
+        }
+
+        private static void DeleteLoginInfo()
+        {
+            if (File.Exists(LoginInfoPath))
+                File.Delete(LoginInfoPath);
         }
 
     }
