@@ -94,6 +94,7 @@
             // 
             // lbAdd_Update_Person
             // 
+            this.lbAdd_Update_Person.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbAdd_Update_Person.BackColor = System.Drawing.Color.Transparent;
             this.lbAdd_Update_Person.Font = new System.Drawing.Font("Segoe UI Semibold", 15F, System.Drawing.FontStyle.Bold);
             this.lbAdd_Update_Person.ForeColor = System.Drawing.SystemColors.MenuHighlight;
@@ -106,6 +107,8 @@
             // 
             // guna2GroupBox1
             // 
+            this.guna2GroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2GroupBox1.Controls.Add(this.lbID);
             this.guna2GroupBox1.Controls.Add(this.pictureBox1);
             this.guna2GroupBox1.Controls.Add(this.guna2HtmlLabel1);
@@ -150,6 +153,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.lbSetImage);
             this.groupBox1.Controls.Add(this.pbProfile);
@@ -195,6 +201,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnSave.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnSave.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -211,6 +218,7 @@
             // 
             // lbSetImage
             // 
+            this.lbSetImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbSetImage.AutoSize = true;
             this.lbSetImage.Location = new System.Drawing.Point(670, 271);
             this.lbSetImage.Name = "lbSetImage";
@@ -222,6 +230,7 @@
             // 
             // pbProfile
             // 
+            this.pbProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbProfile.Image = ((System.Drawing.Image)(resources.GetObject("pbProfile.Image")));
             this.pbProfile.InitialImage = null;
             this.pbProfile.Location = new System.Drawing.Point(658, 86);
@@ -233,6 +242,8 @@
             // 
             // txtbAddress
             // 
+            this.txtbAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbAddress.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtbAddress.DefaultText = "";
             this.txtbAddress.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));

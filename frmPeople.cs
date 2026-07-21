@@ -1,22 +1,32 @@
 ﻿using DVLD_BusinessLayer;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DVLD
 {
     public partial class frmPeople : Form
     {
+        
         private static DataTable _dtAllPeople;
         public frmPeople()
         {
             InitializeComponent();
+            CenterHeader();
+           
+        }
+
+        private void CenterHeader()
+        {
+            picGroupePeople.Left = (ClientSize.Width - picGroupePeople.Width) / 2;
+            label1.Left = (ClientSize.Width - label1.Width) / 2;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            CenterHeader();
         }
 
         private void Initialize_dgv()
@@ -52,6 +62,7 @@ namespace DVLD
             dgvPeople.GridColor = Color.FromArgb(231, 229, 255);
             dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgvPeople.ReadOnly = true;
+            dgvPeople.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
         }
 

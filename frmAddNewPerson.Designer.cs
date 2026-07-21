@@ -34,6 +34,7 @@
             // 
             // add_UpdatePerson1
             // 
+            this.add_UpdatePerson1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.add_UpdatePerson1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.add_UpdatePerson1.Location = new System.Drawing.Point(11, 22);
             this.add_UpdatePerson1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

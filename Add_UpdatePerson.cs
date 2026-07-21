@@ -26,6 +26,7 @@ namespace DVLD
         {
             InitializeComponent();
             InitCountryComboBox();
+            CenterResponsiveControls();
 
             guna2DateTimePicker1.MaxDate = DateTime.Now.AddYears(-18) ; // Set minimum date to 18 years ago
         }
@@ -33,8 +34,21 @@ namespace DVLD
         {
             InitializeComponent();
             InitCountryComboBox();
+            CenterResponsiveControls();
             _PersonID = personID;
             LoadPersonData(personID);
+        }
+
+        private void CenterResponsiveControls()
+        {
+            lbAdd_Update_Person.Left = (ClientSize.Width - lbAdd_Update_Person.Width) / 2;
+            btnSave.Left = (groupBox1.ClientSize.Width - btnSave.Width) / 2;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            CenterResponsiveControls();
         }
 
 

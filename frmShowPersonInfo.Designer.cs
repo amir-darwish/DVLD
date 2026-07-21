@@ -33,6 +33,7 @@
             // 
             // ctrlShowDetails1
             // 
+            this.ctrlShowDetails1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlShowDetails1.Location = new System.Drawing.Point(12, 36);
             this.ctrlShowDetails1.Name = "ctrlShowDetails1";
             this.ctrlShowDetails1.Size = new System.Drawing.Size(969, 355);

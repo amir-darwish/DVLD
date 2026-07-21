@@ -65,11 +65,18 @@
     <Compile Include="Add_UpdatePerson.Designer.cs">
       <DependentUpon>Add_UpdatePerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="clsGlobal.cs" />
     <Compile Include="ctrlShowDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ctrlShowDetails.Designer.cs">
       <DependentUpon>ctrlShowDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fLogin.Designer.cs">
+      <DependentUpon>fLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="frmAddNewPerson.cs">
       <SubType>Form</SubType>
@@ -102,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ctrlShowDetails.resx">
       <DependentUpon>ctrlShowDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fLogin.resx">
+      <DependentUpon>fLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAddNewPerson.resx">
       <DependentUpon>frmAddNewPerson.cs</DependentUpon>
