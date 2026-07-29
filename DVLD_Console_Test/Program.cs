@@ -108,11 +108,11 @@ namespace DVLD_Console_Test
 
         static void testLogin()
         {
-            clsPerson person = clsUser.ValidateUser("admin", "1234");
+            clsUser person = clsUser.ValidateUser("admin", "1234");
 
             if (person != null)
             {
-                Console.WriteLine("Login successful. Welcome, " + person.GetFullName());
+                Console.WriteLine("Login successful. Welcome, " + person.PersonInfo.GetFullName());
 
             }
             else
@@ -133,6 +133,15 @@ namespace DVLD_Console_Test
                 Console.WriteLine("Failed to create user.");
             }
         }
+
+        static void testGetAllUsers()
+        {
+            DataTable users = clsUser.GetAllUsers();
+            foreach (DataRow row in users.Rows)
+            {
+                Console.WriteLine($"User ID: {row["UserID"]}, Full Name: {row["FullName"]}, Person ID: {row["PersonID"]}, Username: {row["UserName"]}, Is Active: {row["IsActive"]}");
+            }
+        }
         static void Main(string[] args)
         {
             //Console.WriteLine("hi");
@@ -141,8 +150,9 @@ namespace DVLD_Console_Test
             //testUpdatePerson(1);
             //testDeletePerson(1033);
             //GetAllPersons();
-            testLogin();
-            testCreateUser();
+            //testLogin();
+            //testCreateUser();
+            testGetAllUsers();
         }
     }
 }

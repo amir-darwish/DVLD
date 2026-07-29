@@ -97,7 +97,7 @@
             this.toolStripMenuItem1,
             this.logoutToolStripMenuItem});
             this.contextMenuStrip_Settings.Name = "contextMenuStrip_Settings";
-            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(211, 110);
+            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(264, 138);
             // 
             // currentUserInfoToolStripMenuItem
             // 
@@ -111,11 +111,12 @@
             this.changePasswordToolStripMenuItem.Name = "changePasswordToolStripMenuItem";
             this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.changePasswordToolStripMenuItem.Text = "Change Password";
+            this.changePasswordToolStripMenuItem.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(260, 6);
             // 
             // logoutToolStripMenuItem
             // 

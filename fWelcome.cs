@@ -64,7 +64,8 @@ namespace DVLD
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
-
+            frmUsers frmUsers = new frmUsers();
+            frmUsers.ShowDialog();
         }
 
         private void btnDrivers_Click(object sender, EventArgs e)
@@ -94,7 +95,13 @@ namespace DVLD
         {
             clsGlobal.SignOut();
             this.Close();
-           
+        }
+
+        private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // true = change password mode
+            frmShowUserInfo currentUser = new frmShowUserInfo(clsGlobal.CurrentUser, true);
+            currentUser.ShowDialog();
         }
     }
 }
