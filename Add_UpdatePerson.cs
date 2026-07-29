@@ -13,6 +13,11 @@ namespace DVLD
 {
     public partial class Add_UpdatePerson : UserControl
     {
+        public delegate void DataBackEventHandler(object sender, int personID);
+
+        public event DataBackEventHandler DataBack;
+
+
         enum enMode {Add, Update}
 
         private int _PersonID = -1;
@@ -153,7 +158,14 @@ namespace DVLD
             _Person.NationalityCountryID = dtCountry.Rows[cbCountry.SelectedIndex].Field<int>("CountryID");
             _Person.ImagePath = pbProfile.ImageLocation;
 
-            return _Person.Save();
+            if (_Person.Save())
+            {
+                // Trigger the DataBack event to notify the parent form
+                DataBack?.Invoke(this, _Person.PersonID);
+                return true;
+            }
+
+            return false;
         }
 
 

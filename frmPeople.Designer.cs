@@ -36,6 +36,7 @@
             this.Edit = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.tEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.tDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.tShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.picGroupePeople = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -45,7 +46,6 @@
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.lbRecord = new System.Windows.Forms.Label();
             this.btnAddNewPeson = new Guna.UI2.WinForms.Guna2Button();
-            this.tShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPeople)).BeginInit();
             this.Edit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picGroupePeople)).BeginInit();
@@ -87,14 +87,15 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvPeople.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvPeople.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(56)))), ((int)(((byte)(62)))));
-            this.dgvPeople.Location = new System.Drawing.Point(12, 235);
+            this.dgvPeople.Location = new System.Drawing.Point(9, 191);
+            this.dgvPeople.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvPeople.Name = "dgvPeople";
             this.dgvPeople.ReadOnly = true;
             this.dgvPeople.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
             this.dgvPeople.RowHeadersVisible = false;
             this.dgvPeople.RowHeadersWidth = 51;
             this.dgvPeople.RowTemplate.Height = 30;
-            this.dgvPeople.Size = new System.Drawing.Size(1109, 560);
+            this.dgvPeople.Size = new System.Drawing.Size(935, 455);
             this.dgvPeople.TabIndex = 0;
             this.dgvPeople.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Dark;
             this.dgvPeople.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(48)))), ((int)(((byte)(52)))));
@@ -118,6 +119,7 @@
             this.dgvPeople.ThemeStyle.RowsStyle.Height = 30;
             this.dgvPeople.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(117)))), ((int)(((byte)(119)))));
             this.dgvPeople.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvPeople.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPeople_CellContentClick);
             this.dgvPeople.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPeople_CellMouseDown);
             // 
             // Edit
@@ -137,29 +139,37 @@
             this.Edit.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.Edit.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.Edit.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.Edit.Size = new System.Drawing.Size(211, 104);
+            this.Edit.Size = new System.Drawing.Size(165, 76);
             // 
             // tEdit
             // 
             this.tEdit.Name = "tEdit";
-            this.tEdit.Size = new System.Drawing.Size(210, 24);
+            this.tEdit.Size = new System.Drawing.Size(164, 24);
             this.tEdit.Text = "Edit";
             this.tEdit.Click += new System.EventHandler(this.tEdit_Click);
             // 
             // tDelete
             // 
             this.tDelete.Name = "tDelete";
-            this.tDelete.Size = new System.Drawing.Size(210, 24);
+            this.tDelete.Size = new System.Drawing.Size(164, 24);
             this.tDelete.Text = "Delete";
             this.tDelete.Click += new System.EventHandler(this.tDelete_Click);
+            // 
+            // tShowDetails
+            // 
+            this.tShowDetails.Name = "tShowDetails";
+            this.tShowDetails.Size = new System.Drawing.Size(164, 24);
+            this.tShowDetails.Text = "Show Details";
+            this.tShowDetails.Click += new System.EventHandler(this.tShowDetails_Click);
             // 
             // picGroupePeople
             // 
             this.picGroupePeople.Image = ((System.Drawing.Image)(resources.GetObject("picGroupePeople.Image")));
             this.picGroupePeople.InitialImage = ((System.Drawing.Image)(resources.GetObject("picGroupePeople.InitialImage")));
-            this.picGroupePeople.Location = new System.Drawing.Point(501, 12);
+            this.picGroupePeople.Location = new System.Drawing.Point(376, 10);
+            this.picGroupePeople.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.picGroupePeople.Name = "picGroupePeople";
-            this.picGroupePeople.Size = new System.Drawing.Size(252, 109);
+            this.picGroupePeople.Size = new System.Drawing.Size(189, 89);
             this.picGroupePeople.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picGroupePeople.TabIndex = 2;
             this.picGroupePeople.TabStop = false;
@@ -169,7 +179,8 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(519, 124);
+            this.label1.Location = new System.Drawing.Point(389, 101);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(219, 38);
             this.label1.TabIndex = 3;
@@ -182,9 +193,11 @@
             this.groupBox1.Controls.Add(this.txtbFilterBy);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cbFillterBy);
-            this.groupBox1.Location = new System.Drawing.Point(14, 149);
+            this.groupBox1.Location = new System.Drawing.Point(10, 121);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(499, 103);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Size = new System.Drawing.Size(477, 84);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -201,12 +214,12 @@
             this.txtbFilterBy.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtbFilterBy.ForeColor = System.Drawing.Color.Black;
             this.txtbFilterBy.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtbFilterBy.Location = new System.Drawing.Point(317, 33);
-            this.txtbFilterBy.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtbFilterBy.Location = new System.Drawing.Point(238, 27);
+            this.txtbFilterBy.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtbFilterBy.Name = "txtbFilterBy";
             this.txtbFilterBy.PlaceholderText = "Try Filter !";
             this.txtbFilterBy.SelectedText = "";
-            this.txtbFilterBy.Size = new System.Drawing.Size(174, 36);
+            this.txtbFilterBy.Size = new System.Drawing.Size(130, 29);
             this.txtbFilterBy.TabIndex = 2;
             this.txtbFilterBy.TextChanged += new System.EventHandler(this.txtbFilterBy_TextChanged);
             this.txtbFilterBy.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbFilterBy_KeyPress);
@@ -215,7 +228,8 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(11, 38);
+            this.label2.Location = new System.Drawing.Point(8, 31);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 25);
             this.label2.TabIndex = 1;
@@ -243,9 +257,10 @@
             "Gender",
             "Phone",
             "Email"});
-            this.cbFillterBy.Location = new System.Drawing.Point(123, 33);
+            this.cbFillterBy.Location = new System.Drawing.Point(92, 27);
+            this.cbFillterBy.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbFillterBy.Name = "cbFillterBy";
-            this.cbFillterBy.Size = new System.Drawing.Size(175, 36);
+            this.cbFillterBy.Size = new System.Drawing.Size(132, 36);
             this.cbFillterBy.StartIndex = 0;
             this.cbFillterBy.TabIndex = 0;
             this.cbFillterBy.SelectedIndexChanged += new System.EventHandler(this.cbFillterBy_SelectedIndexChanged);
@@ -255,7 +270,8 @@
             this.lblRecordsCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRecordsCount.AutoSize = true;
             this.lblRecordsCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRecordsCount.Location = new System.Drawing.Point(73, 805);
+            this.lblRecordsCount.Location = new System.Drawing.Point(55, 654);
+            this.lblRecordsCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRecordsCount.Name = "lblRecordsCount";
             this.lblRecordsCount.Size = new System.Drawing.Size(50, 16);
             this.lblRecordsCount.TabIndex = 5;
@@ -266,7 +282,8 @@
             this.lbRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbRecord.AutoSize = true;
             this.lbRecord.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbRecord.Location = new System.Drawing.Point(12, 805);
+            this.lbRecord.Location = new System.Drawing.Point(9, 654);
+            this.lbRecord.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbRecord.Name = "lbRecord";
             this.lbRecord.Size = new System.Drawing.Size(58, 17);
             this.lbRecord.TabIndex = 6;
@@ -284,24 +301,18 @@
             this.btnAddNewPeson.ForeColor = System.Drawing.Color.White;
             this.btnAddNewPeson.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewPeson.Image")));
             this.btnAddNewPeson.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnAddNewPeson.Location = new System.Drawing.Point(1042, 167);
+            this.btnAddNewPeson.Location = new System.Drawing.Point(885, 136);
+            this.btnAddNewPeson.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAddNewPeson.Name = "btnAddNewPeson";
-            this.btnAddNewPeson.Size = new System.Drawing.Size(79, 51);
+            this.btnAddNewPeson.Size = new System.Drawing.Size(59, 41);
             this.btnAddNewPeson.TabIndex = 7;
             this.btnAddNewPeson.Click += new System.EventHandler(this.btnAddNewPeson_Click);
             // 
-            // tShowDetails
-            // 
-            this.tShowDetails.Name = "tShowDetails";
-            this.tShowDetails.Size = new System.Drawing.Size(210, 24);
-            this.tShowDetails.Text = "Show Details";
-            this.tShowDetails.Click += new System.EventHandler(this.tShowDetails_Click);
-            // 
             // frmPeople
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1133, 830);
+            this.ClientSize = new System.Drawing.Size(953, 674);
             this.Controls.Add(this.btnAddNewPeson);
             this.Controls.Add(this.lbRecord);
             this.Controls.Add(this.lblRecordsCount);
@@ -309,6 +320,7 @@
             this.Controls.Add(this.picGroupePeople);
             this.Controls.Add(this.dgvPeople);
             this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmPeople";
             this.Text = "Manage People";
             this.Load += new System.EventHandler(this.frmPeople_Load);

@@ -236,5 +236,10 @@ namespace DVLD
             frm.ShowDialog();
 
         }
+
+        private void dgvPeople_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

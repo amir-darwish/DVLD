@@ -42,8 +42,14 @@
             this.btnPeople = new Guna.UI2.WinForms.Guna2Button();
             this.btnApplications = new Guna.UI2.WinForms.Guna2Button();
             this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
+            this.contextMenuStrip_Applications = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsManageType = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.guna2ContainerControl1.SuspendLayout();
             this.contextMenuStrip_Settings.SuspendLayout();
+            this.contextMenuStrip_Applications.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2ContainerControl1
@@ -97,30 +103,31 @@
             this.toolStripMenuItem1,
             this.logoutToolStripMenuItem});
             this.contextMenuStrip_Settings.Name = "contextMenuStrip_Settings";
-            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(211, 110);
+            this.contextMenuStrip_Settings.Size = new System.Drawing.Size(169, 76);
             // 
             // currentUserInfoToolStripMenuItem
             // 
             this.currentUserInfoToolStripMenuItem.Name = "currentUserInfoToolStripMenuItem";
-            this.currentUserInfoToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.currentUserInfoToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.currentUserInfoToolStripMenuItem.Text = "Current User Info";
             this.currentUserInfoToolStripMenuItem.Click += new System.EventHandler(this.currentUserInfoToolStripMenuItem_Click);
             // 
             // changePasswordToolStripMenuItem
             // 
             this.changePasswordToolStripMenuItem.Name = "changePasswordToolStripMenuItem";
-            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.changePasswordToolStripMenuItem.Text = "Change Password";
+            this.changePasswordToolStripMenuItem.Click += new System.EventHandler(this.changePasswordToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(165, 6);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
             // 
@@ -169,6 +176,7 @@
             // btnApplications
             // 
             this.btnApplications.BackColor = System.Drawing.Color.Transparent;
+            this.btnApplications.ContextMenuStrip = this.contextMenuStrip_Applications;
             this.btnApplications.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnApplications.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnApplications.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -208,6 +216,41 @@
             this.btnDrivers.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnDrivers.Click += new System.EventHandler(this.btnDrivers_Click);
             // 
+            // contextMenuStrip_Applications
+            // 
+            this.contextMenuStrip_Applications.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip_Applications.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.tsManageType,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem4});
+            this.contextMenuStrip_Applications.Name = "contextMenuStrip_Settings";
+            this.contextMenuStrip_Applications.Size = new System.Drawing.Size(210, 76);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 22);
+            this.toolStripMenuItem2.Text = "Manage Application Type";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // tsManageType
+            // 
+            this.tsManageType.Name = "tsManageType";
+            this.tsManageType.Size = new System.Drawing.Size(209, 22);
+            this.tsManageType.Text = "Change Password";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(206, 6);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(209, 22);
+            this.toolStripMenuItem4.Text = "Logout";
+            // 
             // fWelcome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -220,6 +263,7 @@
             this.Load += new System.EventHandler(this.fWelcome_Load);
             this.guna2ContainerControl1.ResumeLayout(false);
             this.contextMenuStrip_Settings.ResumeLayout(false);
+            this.contextMenuStrip_Applications.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -238,5 +282,10 @@
         private System.Windows.Forms.ToolStripMenuItem changePasswordToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_Applications;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsManageType;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
     }
 }
