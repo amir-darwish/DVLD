@@ -41,12 +41,12 @@
             this.btnUsers = new Guna.UI2.WinForms.Guna2Button();
             this.btnPeople = new Guna.UI2.WinForms.Guna2Button();
             this.btnApplications = new Guna.UI2.WinForms.Guna2Button();
-            this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
             this.contextMenuStrip_Applications = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsManageType = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsTestType = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
             this.guna2ContainerControl1.SuspendLayout();
             this.contextMenuStrip_Settings.SuspendLayout();
             this.contextMenuStrip_Applications.SuspendLayout();
@@ -195,6 +195,42 @@
             this.btnApplications.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnApplications.Click += new System.EventHandler(this.btnApplications_Click);
             // 
+            // contextMenuStrip_Applications
+            // 
+            this.contextMenuStrip_Applications.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip_Applications.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.tsTestType,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem4});
+            this.contextMenuStrip_Applications.Name = "contextMenuStrip_Settings";
+            this.contextMenuStrip_Applications.Size = new System.Drawing.Size(210, 98);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 22);
+            this.toolStripMenuItem2.Text = "Manage Application Type";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // tsTestType
+            // 
+            this.tsTestType.Name = "tsTestType";
+            this.tsTestType.Size = new System.Drawing.Size(209, 22);
+            this.tsTestType.Text = "Manage Test Type";
+            this.tsTestType.Click += new System.EventHandler(this.tsManageType_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(206, 6);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(209, 22);
+            this.toolStripMenuItem4.Text = "Logout";
+            // 
             // btnDrivers
             // 
             this.btnDrivers.BackColor = System.Drawing.Color.Transparent;
@@ -215,41 +251,6 @@
             this.btnDrivers.Text = "Drivers";
             this.btnDrivers.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnDrivers.Click += new System.EventHandler(this.btnDrivers_Click);
-            // 
-            // contextMenuStrip_Applications
-            // 
-            this.contextMenuStrip_Applications.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip_Applications.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.tsManageType,
-            this.toolStripSeparator1,
-            this.toolStripMenuItem4});
-            this.contextMenuStrip_Applications.Name = "contextMenuStrip_Settings";
-            this.contextMenuStrip_Applications.Size = new System.Drawing.Size(210, 76);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(209, 22);
-            this.toolStripMenuItem2.Text = "Manage Application Type";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // tsManageType
-            // 
-            this.tsManageType.Name = "tsManageType";
-            this.tsManageType.Size = new System.Drawing.Size(209, 22);
-            this.tsManageType.Text = "Change Password";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(206, 6);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(209, 22);
-            this.toolStripMenuItem4.Text = "Logout";
             // 
             // fWelcome
             // 
@@ -284,7 +285,7 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_Applications;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem tsManageType;
+        private System.Windows.Forms.ToolStripMenuItem tsTestType;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
     }

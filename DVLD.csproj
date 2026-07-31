@@ -102,6 +102,12 @@
     <Compile Include="frmEditAppType.Designer.cs">
       <DependentUpon>frmEditAppType.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmEditTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditTest.Designer.cs">
+      <DependentUpon>frmEditTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPeople.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,12 @@
     </Compile>
     <Compile Include="frmShowUserInfo.Designer.cs">
       <DependentUpon>frmShowUserInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTestType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTestType.Designer.cs">
+      <DependentUpon>frmTestType.cs</DependentUpon>
     </Compile>
     <Compile Include="frmUsers.cs">
       <SubType>Form</SubType>
@@ -155,6 +167,9 @@
     <EmbeddedResource Include="frmEditAppType.resx">
       <DependentUpon>frmEditAppType.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmEditTest.resx">
+      <DependentUpon>frmEditTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmPeople.resx">
       <DependentUpon>frmPeople.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmShowUserInfo.resx">
       <DependentUpon>frmShowUserInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTestType.resx">
+      <DependentUpon>frmTestType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUsers.resx">
       <DependentUpon>frmUsers.cs</DependentUpon>

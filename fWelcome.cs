@@ -109,5 +109,11 @@ namespace DVLD
             frmApplicationType frmApplicationType = new frmApplicationType();
             frmApplicationType.ShowDialog();
         }
+
+        private void tsManageType_Click(object sender, EventArgs e)
+        {
+            frmTestType frmTestType = new frmTestType();
+            frmTestType.ShowDialog();
+        }
     }
 }
