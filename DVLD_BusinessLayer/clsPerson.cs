@@ -86,6 +86,29 @@ namespace DVLD_BusinessLayer
             }
         }
 
+        // find person by national number
+        public static clsPerson Find(string NationalNo)
+        {
+            int PersonID = -1;
+            string FirstName = "", SecondName = "", ThirdName = "", LastName = "", Address = "", Phone = "", Email = "", ImagePath = "";
+            DateTime DateOfBirth = DateTime.Now;
+            int NationalityCountryID = -1;
+            byte Gender = 0;
+
+            if (clsPersonData.GetPersonInfoByNationalNo(NationalNo, ref PersonID, ref FirstName, ref SecondName,
+                ref ThirdName, ref LastName, ref DateOfBirth, ref Gender, ref Address, ref Phone,
+                ref Email, ref NationalityCountryID, ref ImagePath))
+            {
+                // if we found person we return object
+                return new clsPerson(PersonID, NationalNo, FirstName, SecondName, ThirdName, LastName,
+                    DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private bool _AddNewPerson()
         {
             this.PersonID = clsPersonData.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
