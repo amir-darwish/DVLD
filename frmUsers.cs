@@ -30,7 +30,13 @@ namespace DVLD
             _dtUsers = clsUser.GetAllUsers();
             dgvUsers.DataSource = _dtUsers;
 
-            txtbFilterBy.Visible = false;
+            ctrlFilter1.SetFilter(_dtUsers, dgvUsers, lblRecordsCount,
+                new ctrlFilter.clsFilterColumn("User ID", "UserID", ctrlFilter.enFilterDataType.Number),
+                new ctrlFilter.clsFilterColumn("Person ID", "PersonID", ctrlFilter.enFilterDataType.Number),
+                new ctrlFilter.clsFilterColumn("Username", "UserName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Full Name", "FullName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Is Active", "IsActive", ctrlFilter.enFilterDataType.Bool));
+
             lblRecordsCount.Text = _dtUsers.Rows.Count.ToString();
 
 
@@ -55,68 +61,6 @@ namespace DVLD
             dgvUsers.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgvUsers.ReadOnly = true;
             dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        private void cbFillterBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cbFillterBy_TextChanged(object sender, EventArgs e)
-        {
-            txtbFilterBy.Visible = cbFillterBy.Text != "None";
-            if (!txtbFilterBy.Visible)
-            {
-                if (_dtUsers != null)
-                {
-                    _dtUsers.DefaultView.RowFilter = string.Empty;
-                }
-                txtbFilterBy.Text = string.Empty;
-                lblRecordsCount.Text = dgvUsers.Rows.Count.ToString();
-            }
-        }
-
-        private void txtbFilterBy_TextChanged(object sender, EventArgs e)
-        {
-            txtbFilterBy.Visible = cbFillterBy.Text != "None";
-
-            if (!txtbFilterBy.Visible)
-            {
-                _dtUsers.DefaultView.RowFilter = string.Empty;
-                lblRecordsCount.Text = _dtUsers.DefaultView.Count.ToString();
-                return;
-            }
-
-            string filterColumn = "";
-
-            switch (cbFillterBy.Text)
-            {
-                case "User ID":
-                    filterColumn = "UserID";
-                    break;
-                case "Person ID":
-                    filterColumn = "PersonID";
-                    break;
-                case "Username":
-                    filterColumn = "UserName";
-                    break;
-                case "Is Active":
-                    filterColumn = "IsActive";
-                    break;
-                case "Full Name":
-                    filterColumn = "FullName";
-                    break;
-            }
-
-            string filterText = txtbFilterBy.Text.Replace("'", "''");
-
-            if (filterColumn == "UserID" || filterColumn == "PersonID" || filterColumn == "IsActive")
-                _dtUsers.DefaultView.RowFilter = string.Format("Convert({0}, 'System.String') LIKE '%{1}%'", filterColumn, filterText);
-
-            else
-                _dtUsers.DefaultView.RowFilter = string.Format("{0} LIKE '%{1}%'", filterColumn, filterText);
-
-            lblRecordsCount.Text = _dtUsers.DefaultView.Count.ToString();
         }
 
         private void lblRecordsCount_Click(object sender, EventArgs e)
@@ -166,6 +110,11 @@ namespace DVLD
                     }
                 }
             }
+        }
+
+        private void frmUsers_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

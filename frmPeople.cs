@@ -40,6 +40,18 @@ namespace DVLD
                 dgvPeople.Columns["ImagePath"].Visible = false;
             }
 
+            ctrlFilter1.SetFilter(_dtAllPeople, dgvPeople, lblRecordsCount,
+                new ctrlFilter.clsFilterColumn("Person ID", "PersonID", ctrlFilter.enFilterDataType.Number),
+                new ctrlFilter.clsFilterColumn("National No.", "NationalNo", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("First Name", "FirstName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Second Name", "SecondName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Third Name", "ThirdName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Last Name", "LastName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Nationality", "CountryName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Gender", "Gender", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Phone", "Phone", ctrlFilter.enFilterDataType.Number),
+                new ctrlFilter.clsFilterColumn("Email", "Email", ctrlFilter.enFilterDataType.Text));
+
             lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
 
             // Customize DataGridView appearance
@@ -69,115 +81,11 @@ namespace DVLD
         private void frmPeople_Load(object sender, EventArgs e)
         {
             Initialize_dgv();
-            txtbFilterBy.Visible = false;
         }
 
         private void picGroupePeople_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void cbFillterBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtbFilterBy.Visible = cbFillterBy.Text != "None";
-            if (!txtbFilterBy.Visible)
-            {
-                if (_dtAllPeople != null)
-                {
-                    _dtAllPeople.DefaultView.RowFilter = string.Empty;
-                }
-                txtbFilterBy.Text = string.Empty;
-                lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
-            }
-        }
-
-        private void txtbFilterBy_TextChanged(object sender, EventArgs e)
-        {
-            string FilterColumn = "";
-
-            switch (cbFillterBy.Text)
-            {
-                case "Person ID":
-                    FilterColumn = "PersonID";
-                    break;
-
-                case "National No.":
-                    FilterColumn = "NationalNo";
-                    break;
-
-                case "First Name":
-                    FilterColumn = "FirstName";
-                    break;
-
-                case "Second Name":
-                    FilterColumn = "SecondName";
-                    break;
-
-                case "Third Name":
-                    FilterColumn = "ThirdName";
-                    break;
-
-                case "Last Name":
-                    FilterColumn = "LastName";
-                    break;
-
-                case "Nationality":
-                    FilterColumn = "CountryName";
-                    break;
-
-                case "Gender":
-                    FilterColumn = "Gender";
-                    break;
-
-                case "Phone":
-                    FilterColumn = "Phone";
-                    break;
-
-                case "Email":
-                    FilterColumn = "Email";
-                    break;
-
-                default:
-                    FilterColumn = "None";
-                    break;
-            }
-
-            if (txtbFilterBy.Text.Trim() == "" || FilterColumn == "None")
-            {
-                _dtAllPeople.DefaultView.RowFilter = "";
-                lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
-                return;
-            }
-
-            if (FilterColumn == "Phone" || FilterColumn == "PersonID")
-            {
-                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, txtbFilterBy.Text.Trim());
-            }
-            else
-            {
-                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, txtbFilterBy.Text.Trim());
-            }
-
-            lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
-        }
-
-        private void txtbFilterBy_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (cbFillterBy.Text == "Person ID" || cbFillterBy.Text == "Phone")
-            {
-
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-                    (e.KeyChar != '.'))
-                {
-                    e.Handled = true;
-                }
-
-                // only allow one decimal point
-                if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-                {
-                    e.Handled = true;
-                }
-            }
         }
 
         private void btnAddNewPeson_Click(object sender, EventArgs e)

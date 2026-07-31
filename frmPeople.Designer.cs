@@ -40,9 +40,7 @@
             this.picGroupePeople = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtbFilterBy = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbFillterBy = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.ctrlFilter1 = new DVLD.ctrlFilter();
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.lbRecord = new System.Windows.Forms.Label();
             this.btnAddNewPeson = new Guna.UI2.WinForms.Guna2Button();
@@ -190,9 +188,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.txtbFilterBy);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.cbFillterBy);
+            this.groupBox1.Controls.Add(this.ctrlFilter1);
             this.groupBox1.Location = new System.Drawing.Point(10, 121);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
@@ -200,70 +196,13 @@
             this.groupBox1.Size = new System.Drawing.Size(477, 84);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
+            // ctrlFilter1
             // 
-            // txtbFilterBy
-            // 
-            this.txtbFilterBy.Animated = true;
-            this.txtbFilterBy.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtbFilterBy.DefaultText = "";
-            this.txtbFilterBy.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtbFilterBy.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtbFilterBy.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtbFilterBy.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtbFilterBy.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtbFilterBy.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtbFilterBy.ForeColor = System.Drawing.Color.Black;
-            this.txtbFilterBy.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtbFilterBy.Location = new System.Drawing.Point(238, 27);
-            this.txtbFilterBy.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtbFilterBy.Name = "txtbFilterBy";
-            this.txtbFilterBy.PlaceholderText = "Try Filter !";
-            this.txtbFilterBy.SelectedText = "";
-            this.txtbFilterBy.Size = new System.Drawing.Size(130, 29);
-            this.txtbFilterBy.TabIndex = 2;
-            this.txtbFilterBy.TextChanged += new System.EventHandler(this.txtbFilterBy_TextChanged);
-            this.txtbFilterBy.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbFilterBy_KeyPress);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(8, 31);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 25);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Filter By :";
-            // 
-            // cbFillterBy
-            // 
-            this.cbFillterBy.BackColor = System.Drawing.Color.Transparent;
-            this.cbFillterBy.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbFillterBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbFillterBy.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbFillterBy.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbFillterBy.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbFillterBy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cbFillterBy.ItemHeight = 30;
-            this.cbFillterBy.Items.AddRange(new object[] {
-            "None",
-            "Person ID",
-            "National No.",
-            "First Name",
-            "Second Name",
-            "Third Name",
-            "Last Name",
-            "Nationality",
-            "Gender",
-            "Phone",
-            "Email"});
-            this.cbFillterBy.Location = new System.Drawing.Point(92, 27);
-            this.cbFillterBy.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.cbFillterBy.Name = "cbFillterBy";
-            this.cbFillterBy.Size = new System.Drawing.Size(132, 36);
-            this.cbFillterBy.StartIndex = 0;
-            this.cbFillterBy.TabIndex = 0;
-            this.cbFillterBy.SelectedIndexChanged += new System.EventHandler(this.cbFillterBy_SelectedIndexChanged);
+            this.ctrlFilter1.BackColor = System.Drawing.SystemColors.Control;
+            this.ctrlFilter1.Location = new System.Drawing.Point(3, 14);
+            this.ctrlFilter1.Name = "ctrlFilter1";
+            this.ctrlFilter1.Size = new System.Drawing.Size(430, 64);
+            this.ctrlFilter1.TabIndex = 3;
             // 
             // lblRecordsCount
             // 
@@ -341,9 +280,7 @@
         private System.Windows.Forms.PictureBox picGroupePeople;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private Guna.UI2.WinForms.Guna2ComboBox cbFillterBy;
-        private Guna.UI2.WinForms.Guna2TextBox txtbFilterBy;
-        private System.Windows.Forms.Label label2;
+        private ctrlFilter ctrlFilter1;
         private System.Windows.Forms.Label lblRecordsCount;
         private System.Windows.Forms.Label lbRecord;
         private Guna.UI2.WinForms.Guna2Button btnAddNewPeson;

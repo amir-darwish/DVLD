@@ -6,23 +6,31 @@ namespace DVLD
 {
     public partial class frmAddUpdateUser : Form
     {
+        private int _PersonID = -1;
+
         public frmAddUpdateUser()
         {
             InitializeComponent();
+            InitFilter();
             btnSearch.Enabled = false;
         }
         public frmAddUpdateUser(int personID)
         {
             InitializeComponent();
+            InitFilter();
             btnSearch.Enabled = true;
-            txtSearch.Text = personID.ToString();
-            ctrlShowDetails1.LoadPersonInfo(personID);
-            this.LoadUserDetails(personID);
+            ctrlFilter1.SetSelectedFilter("Person ID");
+            ctrlFilter1.SetFilterValue(personID.ToString());
+            LoadPersonAndUser(personID);
         }
 
-        private void guna2ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void InitFilter()
         {
+            ctrlFilter1.SetSearchFilter(
+                new ctrlFilter.clsFilterColumn("National No.", "NationalNo", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Person ID", "PersonID", ctrlFilter.enFilterDataType.Number));
 
+            ctrlFilter1.FilterValueChanged += ctrlFilter1_FilterValueChanged;
         }
 
         private void ctrlShowDetails1_Load(object sender, EventArgs e)
@@ -32,44 +40,58 @@ namespace DVLD
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            if (string.IsNullOrWhiteSpace(ctrlFilter1.FilterValue))
             {
                 btnSearch.Enabled = false;
+                return;
+            }
+
+            clsPerson person = null;
+
+            if (ctrlFilter1.SelectedFilterText == "Person ID")
+            {
+                if (!int.TryParse(ctrlFilter1.FilterValue, out int personID))
+                {
+                    MessageBox.Show("Please enter a valid numeric Person ID.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                person = clsPerson.Find(personID);
             }
             else
             {
-                btnSearch.Enabled = true;
-                int personID = int.Parse(txtSearch.Text); 
-                ctrlShowDetails1.LoadPersonInfo(personID);
-                LoadUserDetails(personID);
-
+                person = clsPerson.Find(ctrlFilter1.FilterValue);
             }
 
+            if (person == null)
+            {
+                MessageBox.Show("Person was not found.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            LoadPersonAndUser(person.PersonID);
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void ctrlFilter1_FilterValueChanged(object sender, EventArgs e)
         {
-            if (cbFind.SelectedIndex == 0) // Assuming 0 is the index for "Person ID"
-            {
-                ValidatePersonIDInput();
-            }
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                btnSearch.Enabled = false;
-            }
-            else
-            {
-                btnSearch.Enabled = true;
-            }
+            _PersonID = -1;
+            btnSearch.Enabled = !string.IsNullOrWhiteSpace(ctrlFilter1.FilterValue);
         }
-        private void ValidatePersonIDInput()
+
+        private void LoadPersonAndUser(int personID)
         {
-            if (!int.TryParse(txtSearch.Text, out _) && !string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                MessageBox.Show("Please enter a valid numeric Person ID.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSearch.Clear();
-            }
+            _PersonID = personID;
+            ctrlShowDetails1.LoadPersonInfo(personID);
+            LoadUserDetails(personID);
+        }
+
+        private void ResetUserDetails()
+        {
+            tbUsername.Text = "";
+            tbPass.Text = "";
+            tbConfirmPass.Text = "";
+            lbID.Text = "";
+            chbActive.Checked = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -80,8 +102,9 @@ namespace DVLD
         }
         private void frmAddNewUser_DataBack(object sender, int PersonID)
         {
-            ctrlShowDetails1.LoadPersonInfo(PersonID);
-            txtSearch.Text = PersonID.ToString();
+            ctrlFilter1.SetSelectedFilter("Person ID");
+            ctrlFilter1.SetFilterValue(PersonID.ToString());
+            LoadPersonAndUser(PersonID);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -95,10 +118,7 @@ namespace DVLD
             clsUser user = clsUser.FindByPersonID(personID);
             if (user == null)
             {
-                tbUsername.Text = "";
-                tbPass.Text = "";
-                tbConfirmPass.Text = "";
-                lbID.Text = "";
+                ResetUserDetails();
                 return; 
             }
             lbID.Text = user.UserID.ToString();
@@ -137,9 +157,13 @@ namespace DVLD
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            int personID = int.Parse(txtSearch.Text);
+            if (_PersonID == -1)
+            {
+                MessageBox.Show("Please choose a person first.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            clsUser user = clsUser.FindByPersonID(personID);
+            clsUser user = clsUser.FindByPersonID(_PersonID);
 
             if (user == null)
             {
@@ -162,9 +186,8 @@ namespace DVLD
 
         private void CreateUser()
         {
-            int personID = int.Parse(txtSearch.Text);
             bool created = clsUser.CreateUser(
-            personID,
+            _PersonID,
             tbUsername.Text.Trim(),
             tbPass.Text.Trim());
 
