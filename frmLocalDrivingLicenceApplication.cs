@@ -25,6 +25,7 @@ namespace DVLD
         private void frmLocalDrivingLicenceApplication_Load(object sender, EventArgs e)
         {
             initDGV();
+            initFilter();
         }
         private void initDGV()
         {
@@ -45,6 +46,21 @@ namespace DVLD
             dgvLocalDrivingLicenceApplication.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
             dgvLocalDrivingLicenceApplication.ReadOnly = true;
             dgvLocalDrivingLicenceApplication.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+        private void initFilter()
+        {
+            ctrlFilter1.SetFilter(
+                (DataTable)dgvLocalDrivingLicenceApplication.DataSource,
+                dgvLocalDrivingLicenceApplication,
+                lblRecordsCount,
+                new ctrlFilter.clsFilterColumn("Application ID", "LocalDrivingLicenseApplicationID", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("National No", "NationalNo", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Applicant Name", "ApplicantName", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("License Number", "LicenseNumber", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Application Date", "ApplicationDate", ctrlFilter.enFilterDataType.Text),
+                new ctrlFilter.clsFilterColumn("Status", "Status", ctrlFilter.enFilterDataType.Text)
+            );
+
         }
     }
 }

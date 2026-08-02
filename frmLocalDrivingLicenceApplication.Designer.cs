@@ -33,6 +33,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.dgvLocalDrivingLicenceApplication = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.lblRecordsCount = new System.Windows.Forms.Label();
             this.ctrlFilter1 = new DVLD.ctrlFilter();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalDrivingLicenceApplication)).BeginInit();
             this.SuspendLayout();
@@ -81,7 +83,7 @@
             this.dgvLocalDrivingLicenceApplication.Location = new System.Drawing.Point(1, 147);
             this.dgvLocalDrivingLicenceApplication.Name = "dgvLocalDrivingLicenceApplication";
             this.dgvLocalDrivingLicenceApplication.RowHeadersVisible = false;
-            this.dgvLocalDrivingLicenceApplication.Size = new System.Drawing.Size(799, 301);
+            this.dgvLocalDrivingLicenceApplication.Size = new System.Drawing.Size(803, 271);
             this.dgvLocalDrivingLicenceApplication.TabIndex = 1;
             this.dgvLocalDrivingLicenceApplication.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvLocalDrivingLicenceApplication.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -105,6 +107,25 @@
             this.dgvLocalDrivingLicenceApplication.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvLocalDrivingLicenceApplication.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
+            // guna2HtmlLabel2
+            // 
+            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel2.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(12, 424);
+            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(67, 19);
+            this.guna2HtmlLabel2.TabIndex = 3;
+            this.guna2HtmlLabel2.Text = "Records :";
+            // 
+            // lblRecordsCount
+            // 
+            this.lblRecordsCount.AutoSize = true;
+            this.lblRecordsCount.Location = new System.Drawing.Point(85, 430);
+            this.lblRecordsCount.Name = "lblRecordsCount";
+            this.lblRecordsCount.Size = new System.Drawing.Size(35, 13);
+            this.lblRecordsCount.TabIndex = 4;
+            this.lblRecordsCount.Text = "label1";
+            // 
             // ctrlFilter1
             // 
             this.ctrlFilter1.BackColor = System.Drawing.SystemColors.Control;
@@ -118,6 +139,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 449);
+            this.Controls.Add(this.lblRecordsCount);
+            this.Controls.Add(this.guna2HtmlLabel2);
             this.Controls.Add(this.ctrlFilter1);
             this.Controls.Add(this.dgvLocalDrivingLicenceApplication);
             this.Controls.Add(this.guna2HtmlLabel1);
@@ -135,5 +158,7 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
         private Guna.UI2.WinForms.Guna2DataGridView dgvLocalDrivingLicenceApplication;
         private ctrlFilter ctrlFilter1;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
+        private System.Windows.Forms.Label lblRecordsCount;
     }
 }

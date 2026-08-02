@@ -11,77 +11,29 @@ namespace DVLD
         public frmAddUpdateUser()
         {
             InitializeComponent();
-            InitFilter();
-            btnSearch.Enabled = false;
+            subscribeToPersonInfoEvents();
         }
         public frmAddUpdateUser(int personID)
         {
             InitializeComponent();
-            InitFilter();
-            btnSearch.Enabled = true;
-            ctrlFilter1.SetSelectedFilter("Person ID");
-            ctrlFilter1.SetFilterValue(personID.ToString());
-            LoadPersonAndUser(personID);
+            subscribeToPersonInfoEvents();
+            ctrlUserPersonInfo1.LoadPersonInfo(personID);
         }
 
-        private void InitFilter()
+        private void subscribeToPersonInfoEvents()
         {
-            ctrlFilter1.SetSearchFilter(
-                new ctrlFilter.clsFilterColumn("National No.", "NationalNo", ctrlFilter.enFilterDataType.Text),
-                new ctrlFilter.clsFilterColumn("Person ID", "PersonID", ctrlFilter.enFilterDataType.Number));
-
-            ctrlFilter1.FilterValueChanged += ctrlFilter1_FilterValueChanged;
+            ctrlUserPersonInfo1.PersonSelected += ctrlUserPersonInfo1_PersonSelected;
+            ctrlUserPersonInfo1.PersonCleared += ctrlUserPersonInfo1_PersonCleared;
         }
 
-        private void ctrlShowDetails1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(ctrlFilter1.FilterValue))
-            {
-                btnSearch.Enabled = false;
-                return;
-            }
-
-            clsPerson person = null;
-
-            if (ctrlFilter1.SelectedFilterText == "Person ID")
-            {
-                if (!int.TryParse(ctrlFilter1.FilterValue, out int personID))
-                {
-                    MessageBox.Show("Please enter a valid numeric Person ID.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                person = clsPerson.Find(personID);
-            }
-            else
-            {
-                person = clsPerson.Find(ctrlFilter1.FilterValue);
-            }
-
-            if (person == null)
-            {
-                MessageBox.Show("Person was not found.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            LoadPersonAndUser(person.PersonID);
-        }
-
-        private void ctrlFilter1_FilterValueChanged(object sender, EventArgs e)
+        private void ctrlUserPersonInfo1_PersonCleared(object sender, EventArgs e)
         {
             _PersonID = -1;
-            btnSearch.Enabled = !string.IsNullOrWhiteSpace(ctrlFilter1.FilterValue);
         }
 
-        private void LoadPersonAndUser(int personID)
+        private void ctrlUserPersonInfo1_PersonSelected(object sender, int personID)
         {
             _PersonID = personID;
-            ctrlShowDetails1.LoadPersonInfo(personID);
             LoadUserDetails(personID);
         }
 
@@ -92,19 +44,6 @@ namespace DVLD
             tbConfirmPass.Text = "";
             lbID.Text = "";
             chbActive.Checked = false;
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            frmAddNewPerson addPersonForm = new frmAddNewPerson();
-            addPersonForm.DataBack += frmAddNewUser_DataBack;
-            addPersonForm.ShowDialog();
-        }
-        private void frmAddNewUser_DataBack(object sender, int PersonID)
-        {
-            ctrlFilter1.SetSelectedFilter("Person ID");
-            ctrlFilter1.SetFilterValue(PersonID.ToString());
-            LoadPersonAndUser(PersonID);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -193,6 +132,11 @@ namespace DVLD
 
             MessageBox.Show(created ? "User created" : "User not created");
             return;
+        }
+
+        private void frmAddUpdateUser_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

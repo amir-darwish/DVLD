@@ -78,6 +78,12 @@
     <Compile Include="ctrlFilter.Designer.cs">
       <DependentUpon>ctrlFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrlUserPersonInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlUserPersonInfo.Designer.cs">
+      <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="fLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ctrlFilter.resx">
       <DependentUpon>ctrlFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctrlUserPersonInfo.resx">
+      <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fLogin.resx">
       <DependentUpon>fLogin.cs</DependentUpon>

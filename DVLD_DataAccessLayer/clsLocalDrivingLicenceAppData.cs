@@ -29,5 +29,46 @@ namespace DVLD_DataAccessLayer
             }
             return dtLocalDrivingLicenceApplications;
         }
+
+        public static int CreateLocalDrivingLicenceApplication(int applicationId, int licenceClassId)
+        {
+            string query = @"
+                INSERT INTO dbo.LocalDrivingLicenseApplications (ApplicationID, LicenseClassID)
+                VALUES (@ApplicationID, @LicenseClassID);
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ApplicationID", applicationId);
+                    cmd.Parameters.AddWithValue("@LicenseClassID", licenceClassId);
+                    conn.Open();
+
+                    object result = cmd.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : -1;
+                }
+            }
+        }
+
+        public static bool IsThereAnActiveApplication(int applicantId, int licenseClassId) {
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                string query = @"
+                      SELECT 1 FROM LocalDrivingLicenseApplications L 
+                        INNER JOIN Applications A ON L.ApplicationID = A.ApplicationID
+                        WHERE A.ApplicantPersonID = @ApplicantPersonID AND L.LicenseClassID = @LicenseClassID AND A.ApplicationStatus = 1";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ApplicantPersonID", applicantId);
+                    cmd.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    return result != null;
+                }
+            }
+
+        }
     }
 }
