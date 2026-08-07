@@ -42,7 +42,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
             this.lbAppID = new System.Windows.Forms.Label();
-            this.cbLicenceClass = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cbLicenseClass = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.btnSave = new Guna.UI2.WinForms.Guna2Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -71,7 +72,8 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.cbLicenceClass);
+            this.tabPage2.Controls.Add(this.btnSave);
+            this.tabPage2.Controls.Add(this.cbLicenseClass);
             this.tabPage2.Controls.Add(this.lbAppID);
             this.tabPage2.Controls.Add(this.lbDate);
             this.tabPage2.Controls.Add(this.label7);
@@ -198,20 +200,36 @@
             this.lbAppID.TabIndex = 8;
             this.lbAppID.Text = "----";
             // 
-            // cbLicenceClass
+            // cbLicenseClass
             // 
-            this.cbLicenceClass.BackColor = System.Drawing.Color.Transparent;
-            this.cbLicenceClass.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbLicenceClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLicenceClass.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbLicenceClass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cbLicenceClass.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbLicenceClass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cbLicenceClass.ItemHeight = 30;
-            this.cbLicenceClass.Location = new System.Drawing.Point(188, 201);
-            this.cbLicenceClass.Name = "cbLicenceClass";
-            this.cbLicenceClass.Size = new System.Drawing.Size(220, 36);
-            this.cbLicenceClass.TabIndex = 9;
+            this.cbLicenseClass.BackColor = System.Drawing.Color.Transparent;
+            this.cbLicenseClass.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbLicenseClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLicenseClass.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cbLicenseClass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cbLicenseClass.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbLicenseClass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cbLicenseClass.ItemHeight = 30;
+            this.cbLicenseClass.Location = new System.Drawing.Point(188, 201);
+            this.cbLicenseClass.Name = "cbLicenseClass";
+            this.cbLicenseClass.Size = new System.Drawing.Size(347, 36);
+            this.cbLicenseClass.TabIndex = 9;
+            // 
+            // btnSave
+            // 
+            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(188, 366);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(180, 45);
+            this.btnSave.TabIndex = 10;
+            this.btnSave.Text = "Save";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // frmNewLocalDrivingLicenceApplication
             // 
@@ -248,6 +266,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lbCreatedBy;
         private System.Windows.Forms.Label label6;
-        private Guna.UI2.WinForms.Guna2ComboBox cbLicenceClass;
+        private Guna.UI2.WinForms.Guna2ComboBox cbLicenseClass;
+        private Guna.UI2.WinForms.Guna2Button btnSave;
     }
 }
