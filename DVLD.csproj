@@ -84,6 +84,12 @@
     <Compile Include="ctrlUserPersonInfo.Designer.cs">
       <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrlVisionTestAppointment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlVisionTestAppointment.Designer.cs">
+      <DependentUpon>ctrlVisionTestAppointment.cs</DependentUpon>
+    </Compile>
     <Compile Include="fLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ctrlUserPersonInfo.resx">
       <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctrlVisionTestAppointment.resx">
+      <DependentUpon>ctrlVisionTestAppointment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fLogin.resx">
       <DependentUpon>fLogin.cs</DependentUpon>
