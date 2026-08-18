@@ -62,5 +62,29 @@ namespace DVLD
             );
 
         }
+
+        private void showApplicationDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
+                dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select an application first.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            object value = dgvLocalDrivingLicenceApplication.CurrentRow
+                .Cells["LocalDrivingLicenseApplicationID"].Value;
+
+            if (value == null || value == DBNull.Value ||
+                !int.TryParse(value.ToString(), out int localApplicationID))
+            {
+                MessageBox.Show("The selected application ID is invalid.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            frmVisionTestAppointments detailsForm = new frmVisionTestAppointments(localApplicationID);
+            detailsForm.ShowDialog();
+
+        } 
     }
 }

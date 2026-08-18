@@ -30,6 +30,60 @@ namespace DVLD_DataAccessLayer
             return dtLocalDrivingLicenceApplications;
         }
 
+        public static DataTable GetLocalDrivingLicenseApplicationInfo(int localApplicationID)
+        {
+            DataTable dtLocalDrivingLicenceApplication = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                conn.Open();
+
+                string query = @"
+                    SELECT
+                        L.LocalDrivingLicenseApplicationID,
+                        L.ApplicationID,
+                        L.LicenseClassID,
+                        LC.ClassName,
+                        A.ApplicationDate,
+                        A.ApplicationStatus,
+                        A.LastStatusDate,
+                        A.PaidFees,
+                        A.ApplicationTypeID,
+                        AT.ApplicationTypeTitle,
+                        A.ApplicantPersonID,
+                        CONCAT(
+                            P.FirstName, ' ', P.SecondName, ' ',
+                            ISNULL(P.ThirdName, ''), ' ', P.LastName
+                        ) AS ApplicantName,
+                        A.CreatedByUserID,
+                        U.UserName AS CreatedBy
+                    FROM LocalDrivingLicenseApplications L
+                    INNER JOIN Applications A
+                        ON L.ApplicationID = A.ApplicationID
+                    INNER JOIN LicenseClasses LC
+                        ON L.LicenseClassID = LC.LicenseClassID
+                    INNER JOIN ApplicationTypes AT
+                        ON A.ApplicationTypeID = AT.ApplicationTypeID
+                    INNER JOIN People P
+                        ON A.ApplicantPersonID = P.PersonID
+                    LEFT JOIN Users U
+                        ON A.CreatedByUserID = U.UserID
+                    WHERE L.LocalDrivingLicenseApplicationID = @LocalApplicationID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@LocalApplicationID", localApplicationID);
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dtLocalDrivingLicenceApplication);
+                    }
+                }
+            }
+
+            return dtLocalDrivingLicenceApplication;
+        }
+
         public static int CreateLocalDrivingLicenceApplication(int applicationId, int licenceClassId)
         {
             string query = @"

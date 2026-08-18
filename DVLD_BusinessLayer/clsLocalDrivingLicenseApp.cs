@@ -14,6 +14,11 @@ namespace DVLD_BusinessLayer
             return clsLocalDrivingLicenceAppData.GetAllLocalDrivingLicenceApplicationsFromView();
         }
 
+        public static DataTable GetLocalDrivingLicenseApplicationInfo(int localApplicationID)
+        {
+            return clsLocalDrivingLicenceAppData.GetLocalDrivingLicenseApplicationInfo(localApplicationID);
+        }
+
         public static bool IsThereAnActiveApplicationIsLocalDrivingLicenceApplicationExists(int applicantId, int licenseClassId)
         {
             return clsLocalDrivingLicenceAppData.IsThereAnActiveApplication(applicantId, licenseClassId);
