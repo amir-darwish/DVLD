@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace DVLD
 {
-    public partial class Form1 : Form
+    public partial class frmShowPersonInfo : Form
     {
-        public Form1()
+        public frmShowPersonInfo(int personID)
         {
             InitializeComponent();
+            ctrlShowDetails1.LoadPersonInfo(personID);
+        }
+
+        private void frmShowPersonInfo_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

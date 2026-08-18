@@ -1,11 +1,7 @@
 ﻿using DVLD_DataAccessLayer;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 
 namespace DVLD_BusinessLayer
 {
@@ -90,6 +86,29 @@ namespace DVLD_BusinessLayer
             }
         }
 
+        // find person by national number
+        public static clsPerson Find(string NationalNo)
+        {
+            int PersonID = -1;
+            string FirstName = "", SecondName = "", ThirdName = "", LastName = "", Address = "", Phone = "", Email = "", ImagePath = "";
+            DateTime DateOfBirth = DateTime.Now;
+            int NationalityCountryID = -1;
+            byte Gender = 0;
+
+            if (clsPersonData.GetPersonInfoByNationalNo(NationalNo, ref PersonID, ref FirstName, ref SecondName,
+                ref ThirdName, ref LastName, ref DateOfBirth, ref Gender, ref Address, ref Phone,
+                ref Email, ref NationalityCountryID, ref ImagePath))
+            {
+                // if we found person we return object
+                return new clsPerson(PersonID, NationalNo, FirstName, SecondName, ThirdName, LastName,
+                    DateOfBirth, Gender, Address, Phone, Email, NationalityCountryID, ImagePath);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private bool _AddNewPerson()
         {
             this.PersonID = clsPersonData.AddNewPerson(this.NationalNo, this.FirstName, this.SecondName,
@@ -111,10 +130,10 @@ namespace DVLD_BusinessLayer
             switch (Mode)
             {
                 case enMode.AddNew:
-                   
+
                     if (clsPersonData.IsPersonExist(this.NationalNo))
                     {
-                       
+
                         return false;
                     }
 
@@ -122,13 +141,14 @@ namespace DVLD_BusinessLayer
                     {
                         Mode = enMode.Update;
                         return true;
-                    }else
+                    }
+                    else
                     {
                         return false;
                     }
 
-                    case enMode.Update:
-                        return _UpdatePerson();
+                case enMode.Update:
+                    return _UpdatePerson();
             }
             return false;
         }
@@ -140,6 +160,15 @@ namespace DVLD_BusinessLayer
         public static DataTable GetAllPersons()
         {
             return clsPersonData.GetAllPersons();
+        }
+
+        public static bool IsPersonExist(string NationalNo)
+        {
+            return clsPersonData.IsPersonExist(NationalNo);
+        }
+        public string GetFullName()
+        {
+            return FirstName + " " + SecondName + " " + ThirdName + " " + LastName;
         }
     }
 }
