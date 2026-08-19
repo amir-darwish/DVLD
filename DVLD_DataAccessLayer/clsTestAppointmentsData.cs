@@ -12,25 +12,18 @@ namespace DVLD_DataAccessLayer
 {
     public class clsTestAppointmentsData
     {
-        public static DataTable GetTestAppointments(int localApplicationID)
+        public static DataTable GetTestAppointments(int localApplicationID, int testTypeID)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT
                             TA.TestAppointmentID,
-                            TA.LocalDrivingLicenseApplicationID,
-                            TA.TestTypeID,
-                            TT.TestTypeTitle,
                             TA.AppointmentDate,
                             TA.PaidFees,
-                            TA.IsLocked,
-                            U.UserName                 
+                            TA.IsLocked                
                         FROM TestAppointments TA
-                        INNER JOIN TestTypes TT
-                            ON TA.TestTypeID = TT.TestTypeID
-                        INNER JOIN Users U
-                            ON TA.CreatedByUserID = U.UserID
                         WHERE TA.LocalDrivingLicenseApplicationID =
                               @LocalDrivingLicenseApplicationID
+                        AND TA.TestTypeID = @TestTypeID
                         ORDER BY TA.AppointmentDate DESC";
             using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
             {
@@ -38,6 +31,7 @@ namespace DVLD_DataAccessLayer
                 {
                     //cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", localApplicationID);
+                    cmd.Parameters.AddWithValue("@TestTypeID", testTypeID);
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
                         da.Fill(dt);
@@ -125,6 +119,7 @@ namespace DVLD_DataAccessLayer
             }
             return dt;
         }
+
    }
 
 

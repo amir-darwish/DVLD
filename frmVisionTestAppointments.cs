@@ -7,22 +7,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DVLD_BusinessLayer;
 
 namespace DVLD
 {
     public partial class frmVisionTestAppointments : Form
     {
-        int _LocalDrivingLicenseApplicationID = -1;
-        public frmVisionTestAppointments(int localDrivingLicenseApplicationID   )
+        private int _LocalDrivingLicenseApplicationID = -1;
+        private int _TestTypeID = -1;
+
+        public frmVisionTestAppointments(
+            int localDrivingLicenseApplicationID,
+            int testTypeID)
         {
             InitializeComponent();
             _LocalDrivingLicenseApplicationID = localDrivingLicenseApplicationID;
-           
+            _TestTypeID = testTypeID;
+
         }
 
         private void frmVisionTestAppointments_Load(object sender, EventArgs e)
         {
             ctrlVisionTestAppointment1.LoadApplicationInfo(_LocalDrivingLicenseApplicationID);
+            initDGV();
+        }
+        private void initDGV()
+        {
+            DataTable dtAppointments = clsTestAppointments.GetTestAppointments(
+                _LocalDrivingLicenseApplicationID,
+                _TestTypeID);
+            dgvAppointments.DataSource = dtAppointments;
+            // Customize DataGridView appearance
+            dgvAppointments.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(197, 203, 232);
+            dgvAppointments.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+            dgvAppointments.DefaultCellStyle.BackColor = Color.White;
+            dgvAppointments.DefaultCellStyle.ForeColor = Color.Black;
+            dgvAppointments.DefaultCellStyle.SelectionBackColor = Color.FromArgb(110, 120, 180);
+            dgvAppointments.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvAppointments.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(63, 81, 181);
+            dgvAppointments.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvAppointments.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvAppointments.ColumnHeadersHeight = 35;
+            dgvAppointments.GridColor = Color.FromArgb(231, 229, 255);
+            dgvAppointments.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
+            dgvAppointments.ReadOnly = true;
+            dgvAppointments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
     }
 }

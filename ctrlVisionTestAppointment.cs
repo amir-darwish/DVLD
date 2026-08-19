@@ -37,9 +37,11 @@ namespace DVLD
                 return;
             }
 
+
             _LocalDrivingLicenseApplicationID = localApplicationID;
 
             DataRow row = dtApplicationDetails.Rows[0];
+
 
             lbDLID.Text = row["LocalDrivingLicenseApplicationID"].ToString();
             lbAppliedLic.Text = row["ClassName"].ToString();
@@ -51,6 +53,15 @@ namespace DVLD
             lbDate.Text = FormatDate(row, "ApplicationDate");
             lbStDate.Text = FormatDate(row, "LastStatusDate");
             lbCreatedBy.Text = row["CreatedBy"].ToString();
+
+            MessageBox.Show(
+            $"DL ID: {row["LocalDrivingLicenseApplicationID"]}\n" +
+            $"App ID: {row["ApplicationID"]}\n" +
+            $"Class: {row["ClassName"]}\n" +
+            $"Applicant: {row["ApplicantName"]}");
+
+            MessageBox.Show(lbCreatedBy.Text);
+
         }
 
         private string FormatDate(DataRow row, string columnName)

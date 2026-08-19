@@ -82,7 +82,10 @@ namespace DVLD
                 return;
             }
 
-            frmVisionTestAppointments detailsForm = new frmVisionTestAppointments(localApplicationID);
+            int visionTestTypeID = 1;
+            frmVisionTestAppointments detailsForm = new frmVisionTestAppointments(
+                localApplicationID,
+                visionTestTypeID);
             detailsForm.ShowDialog();
 
         } 
