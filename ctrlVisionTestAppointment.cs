@@ -54,14 +54,6 @@ namespace DVLD
             lbStDate.Text = FormatDate(row, "LastStatusDate");
             lbCreatedBy.Text = row["CreatedBy"].ToString();
 
-            MessageBox.Show(
-            $"DL ID: {row["LocalDrivingLicenseApplicationID"]}\n" +
-            $"App ID: {row["ApplicationID"]}\n" +
-            $"Class: {row["ClassName"]}\n" +
-            $"Applicant: {row["ApplicantName"]}");
-
-            MessageBox.Show(lbCreatedBy.Text);
-
         }
 
         private string FormatDate(DataRow row, string columnName)

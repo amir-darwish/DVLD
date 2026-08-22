@@ -1,6 +1,6 @@
 ﻿namespace DVLD
 {
-    partial class frmVisionTestAppointments
+    partial class frmTestAppointments
     {
         /// <summary>
         /// Required designer variable.
@@ -130,16 +130,16 @@
             this.ctrlVisionTestAppointment1.Size = new System.Drawing.Size(704, 513);
             this.ctrlVisionTestAppointment1.TabIndex = 0;
             // 
-            // frmVisionTestAppointments
+            // frmTestAppointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(701, 611);
             this.Controls.Add(this.gbAppointments);
             this.Controls.Add(this.ctrlVisionTestAppointment1);
-            this.Name = "frmVisionTestAppointments";
-            this.Text = "frmVisionTestAppointments";
-            this.Load += new System.EventHandler(this.frmVisionTestAppointments_Load);
+            this.Name = "frmTestAppointments";
+            this.Text = "Test Appointments";
+            this.Load += new System.EventHandler(this.frmTestAppointments_Load);
             this.gbAppointments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
             this.ResumeLayout(false);

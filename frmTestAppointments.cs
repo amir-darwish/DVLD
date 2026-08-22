@@ -11,26 +11,37 @@ using DVLD_BusinessLayer;
 
 namespace DVLD
 {
-    public partial class frmVisionTestAppointments : Form
+    public partial class frmTestAppointments : Form
     {
         private int _LocalDrivingLicenseApplicationID = -1;
         private int _TestTypeID = -1;
 
-        public frmVisionTestAppointments(
+        public frmTestAppointments(
             int localDrivingLicenseApplicationID,
             int testTypeID)
         {
+            if (localDrivingLicenseApplicationID <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(localDrivingLicenseApplicationID));
+            }
+
+            if (testTypeID <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(testTypeID));
+            }
+
             InitializeComponent();
             _LocalDrivingLicenseApplicationID = localDrivingLicenseApplicationID;
             _TestTypeID = testTypeID;
 
         }
 
-        private void frmVisionTestAppointments_Load(object sender, EventArgs e)
+        private void frmTestAppointments_Load(object sender, EventArgs e)
         {
             ctrlVisionTestAppointment1.LoadApplicationInfo(_LocalDrivingLicenseApplicationID);
             initDGV();
         }
+
         private void initDGV()
         {
             DataTable dtAppointments = clsTestAppointments.GetTestAppointments(

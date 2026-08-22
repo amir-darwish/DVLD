@@ -12,6 +12,10 @@ namespace DVLD
 {
     public partial class frmLocalDrivingLicenceApplication : Form
     {
+        private const int VisionTestTypeID = 1;
+        private const int WrittenTestTypeID = 2;
+        private const int StreetTestTypeID = 3;
+
         public frmLocalDrivingLicenceApplication()
         {
             InitializeComponent();
@@ -65,10 +69,31 @@ namespace DVLD
 
         private void showApplicationDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenTestAppointmentsForSelectedApplication(VisionTestTypeID);
+
+        } 
+
+        private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(VisionTestTypeID);
+        }
+
+        private void scheduleWrittenTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(WrittenTestTypeID);
+        }
+
+        private void scheduleStreetTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(StreetTestTypeID);
+        }
+
+        private void OpenTestAppointmentsForSelectedApplication(int testTypeID)
+        {
             if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
                 dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
             {
-                MessageBox.Show("Please select an application first.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select an application first.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -78,16 +103,20 @@ namespace DVLD
             if (value == null || value == DBNull.Value ||
                 !int.TryParse(value.ToString(), out int localApplicationID))
             {
-                MessageBox.Show("The selected application ID is invalid.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("The selected application ID is invalid.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            int visionTestTypeID = 1;
-            frmVisionTestAppointments detailsForm = new frmVisionTestAppointments(
-                localApplicationID,
-                visionTestTypeID);
-            detailsForm.ShowDialog();
+            OpenTestAppointments(localApplicationID, testTypeID);
+        }
 
-        } 
+        private void OpenTestAppointments(int localApplicationID, int testTypeID)
+        {
+            frmTestAppointments appointmentsForm = new frmTestAppointments(
+                localApplicationID,
+                testTypeID);
+
+            appointmentsForm.ShowDialog();
+        }
     }
 }

@@ -168,11 +168,11 @@
     <Compile Include="frmUsers.Designer.cs">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmVisionTestAppointments.cs">
+    <Compile Include="frmTestAppointments.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmVisionTestAppointments.Designer.cs">
-      <DependentUpon>frmVisionTestAppointments.cs</DependentUpon>
+    <Compile Include="frmTestAppointments.Designer.cs">
+      <DependentUpon>frmTestAppointments.cs</DependentUpon>
     </Compile>
     <Compile Include="fWelcome.cs">
       <SubType>Form</SubType>
@@ -236,8 +236,8 @@
     <EmbeddedResource Include="frmUsers.resx">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmVisionTestAppointments.resx">
-      <DependentUpon>frmVisionTestAppointments.cs</DependentUpon>
+    <EmbeddedResource Include="frmTestAppointments.resx">
+      <DependentUpon>frmTestAppointments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fWelcome.resx">
       <DependentUpon>fWelcome.cs</DependentUpon>
