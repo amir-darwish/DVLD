@@ -64,6 +64,7 @@
             this.btnAddAppointment.Size = new System.Drawing.Size(135, 26);
             this.btnAddAppointment.TabIndex = 1;
             this.btnAddAppointment.Text = "Add Appointment";
+            this.btnAddAppointment.Click += new System.EventHandler(this.btnAddAppointment_Click);
             // 
             // dgvAppointments
             // 

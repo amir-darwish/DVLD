@@ -64,5 +64,35 @@ namespace DVLD
             dgvAppointments.ReadOnly = true;
             dgvAppointments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
+        private void btnAddAppointment_Click(object sender, EventArgs e)
+        {
+            if (clsTestAppointments.IsThereAnActiveTestAppointment(
+                _LocalDrivingLicenseApplicationID,
+                _TestTypeID))
+            {
+                MessageBox.Show("There is already an active appointment for this test.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataTable dtPreviousAppointments = clsTestAppointments.GetTestAppointments(
+                _LocalDrivingLicenseApplicationID,
+                _TestTypeID);
+
+            if (dtPreviousAppointments.Rows.Count > 0)
+            {
+                MessageBox.Show("A previous appointment exists. Complete the test result and retake flow before adding another appointment.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            frmAddTestAppointment addAppointmentForm = new frmAddTestAppointment(
+                _LocalDrivingLicenseApplicationID,
+                _TestTypeID);
+
+            if (addAppointmentForm.ShowDialog() == DialogResult.OK)
+            {
+                initDGV();
+            }
+        }
     }
 }
