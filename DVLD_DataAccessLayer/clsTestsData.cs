@@ -164,6 +164,70 @@ namespace DVLD_DataAccessLayer
             return dtTest;
         }
 
+        public static DataTable GetTakeTestInfo(int testAppointmentID)
+        {
+            DataTable dtTakeTestInfo = new DataTable();
+
+            string query = @"SELECT
+                                 TA.TestAppointmentID,
+                                 TA.LocalDrivingLicenseApplicationID,
+                                 TA.TestTypeID,
+                                 TT.TestTypeTitle,
+                                 LC.ClassName,
+                                 CONCAT(P.FirstName, ' ', P.SecondName, ' ',
+                                        ISNULL(P.ThirdName, ''), ' ', P.LastName) AS ApplicantName,
+                                 TA.AppointmentDate,
+                                 TA.PaidFees AS TestFees,
+                                 TA.IsLocked,
+                                 (SELECT COUNT(*)
+                                  FROM TestAppointments PreviousTA
+                                  WHERE PreviousTA.LocalDrivingLicenseApplicationID =
+                                        TA.LocalDrivingLicenseApplicationID
+                                    AND PreviousTA.TestTypeID = TA.TestTypeID
+                                    AND PreviousTA.TestAppointmentID <= TA.TestAppointmentID) AS Trial,
+                                 TestInfo.TestID,
+                                 TestInfo.TestResult,
+                                 TestInfo.Notes
+                             FROM TestAppointments TA
+                             INNER JOIN TestTypes TT
+                                 ON TT.TestTypeID = TA.TestTypeID
+                             INNER JOIN LocalDrivingLicenseApplications L
+                                 ON L.LocalDrivingLicenseApplicationID =
+                                    TA.LocalDrivingLicenseApplicationID
+                             INNER JOIN Applications A
+                                 ON A.ApplicationID = L.ApplicationID
+                             INNER JOIN People P
+                                 ON P.PersonID = A.ApplicantPersonID
+                             INNER JOIN LicenseClasses LC
+                                 ON LC.LicenseClassID = L.LicenseClassID
+                             OUTER APPLY
+                             (
+                                 SELECT TOP 1
+                                     T.TestID,
+                                     T.TestResult,
+                                     T.Notes
+                                 FROM Tests T
+                                 WHERE T.TestAppointmentID = TA.TestAppointmentID
+                                 ORDER BY T.TestID DESC
+                             ) TestInfo
+                             WHERE TA.TestAppointmentID = @TestAppointmentID";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TestAppointmentID", testAppointmentID);
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dtTakeTestInfo);
+                    }
+                }
+            }
+
+            return dtTakeTestInfo;
+        }
+
         public static bool? GetLastTestResult(int localApplicationID, int testTypeID)
         {
             string query = @"SELECT TOP 1 T.TestResult

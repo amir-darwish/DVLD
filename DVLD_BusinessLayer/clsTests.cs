@@ -25,6 +25,11 @@ namespace DVLD_BusinessLayer
             return clsTestsData.GetTestByAppointmentID(testAppointmentID);
         }
 
+        public static DataTable GetTakeTestInfo(int testAppointmentID)
+        {
+            return clsTestsData.GetTakeTestInfo(testAppointmentID);
+        }
+
         public static bool? GetLastTestResult(int localApplicationID, int testTypeID)
         {
             return clsTestsData.GetLastTestResult(localApplicationID, testTypeID);
