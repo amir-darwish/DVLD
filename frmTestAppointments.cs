@@ -129,7 +129,10 @@ namespace DVLD
 
             using (frmTakeTest frm = new frmTakeTest(testAppointmentID))
             {
-                frm.ShowDialog(this);
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    initDGV();
+                }
             }
         }
 

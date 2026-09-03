@@ -8,6 +8,7 @@ namespace DVLD
     public partial class frmTakeTest : Form
     {
         private int _TestAppointmentID = -1;
+        private bool _CanSave = false;
 
         public frmTakeTest()
         {
@@ -39,6 +40,7 @@ namespace DVLD
 
         private void LoadTestInfo()
         {
+            _CanSave = false;
             btnSave.Enabled = false;
 
             try
@@ -105,7 +107,8 @@ namespace DVLD
 
             gbResult.Enabled = !isLocked;
             txtNotes.ReadOnly = isLocked;
-            btnSave.Enabled = !isLocked;
+            _CanSave = !isLocked;
+            btnSave.Enabled = _CanSave;
 
             if (isLocked)
             {
@@ -129,6 +132,7 @@ namespace DVLD
                 ? string.Empty
                 : row["Notes"].ToString();
 
+            _CanSave = false;
             gbResult.Enabled = false;
             txtNotes.ReadOnly = true;
             btnSave.Enabled = false;
@@ -143,5 +147,104 @@ namespace DVLD
                 MessageBoxIcon.Error);
         }
 
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (!clsGlobal.IsLoggedIn() || clsGlobal.CurrentUser.UserID <= 0)
+            {
+                MessageBox.Show(
+                    "There is no logged-in user.",
+                    "Take Test",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!TryGetSelectedResult(out bool testResult))
+            {
+                MessageBox.Show(
+                    "Please select a test result (Pass or Fail) before saving.",
+                    "Take Test",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirmation = MessageBox.Show(
+                "The test result cannot be changed after saving. Do you want to continue?",
+                "Confirm Test Result",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+
+            if (confirmation != DialogResult.Yes)
+            {
+                return;
+            }
+
+            _CanSave = false;
+            btnSave.Enabled = false;
+
+            try
+            {
+                int newTestID = clsTests.AddNewTest(
+                    _TestAppointmentID,
+                    testResult,
+                    txtNotes.Text.Trim(),
+                    clsGlobal.CurrentUser.UserID);
+
+                if (newTestID <= 0)
+                {
+                    MessageBox.Show(
+                        "The result was not saved. The appointment may already be locked or have a result.",
+                        "Take Test",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    LoadTestInfo();
+                    return;
+                }
+
+                lbTestID.Text = newTestID.ToString();
+
+                MessageBox.Show(
+                    "Test result saved successfully.",
+                    "Take Test",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                MessageBox.Show(
+                    "Test result could not be saved. Please refresh the appointment and try again.",
+                    "Take Test",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                LoadTestInfo();
+            }
+            finally
+            {
+                if (!IsDisposed)
+                {
+                    btnSave.Enabled = _CanSave;
+                }
+            }
+        }
+
+        private bool TryGetSelectedResult(out bool testResult)
+        {
+            testResult = false;
+
+            if (!rbPass.Checked && !rbFail.Checked)
+            {
+                return false;
+            }
+
+            testResult = rbPass.Checked;
+            return true;
+        }
     }
 }
