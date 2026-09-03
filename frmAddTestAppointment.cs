@@ -16,6 +16,8 @@ namespace DVLD
         private int _LocalDrivingLicenseApplicationID = -1;
         private int _TestTypeID = -1;
         private decimal _TestFees = 0;
+        private decimal _RetakeFees = 0;
+        private bool _IsRetakeTest = false;
 
         public frmAddTestAppointment()
         {
@@ -49,9 +51,19 @@ namespace DVLD
             lbRtotalFees.Text = "0";
             lbRAPPID.Text = "N/A";
 
-            LoadApplicationInfo();
-            LoadTestTypeInfo();
-            LoadTrialsCount();
+            try
+            {
+                LoadApplicationInfo();
+                LoadTestTypeInfo();
+                LoadTrialsCount();
+                LoadRetakeInfo();
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                btnSave.Enabled = false;
+                MessageBox.Show("Appointment information could not be loaded. Please close this window and try again.",
+                    "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoadApplicationInfo()
@@ -110,6 +122,33 @@ namespace DVLD
             label2.Text = dtAppointments.Rows.Count.ToString();
         }
 
+        private void LoadRetakeInfo()
+        {
+            using (DataTable bookingInfo = clsTestAppointments.GetAppointmentBookingInfo(
+                _LocalDrivingLicenseApplicationID, _TestTypeID))
+            {
+                string error = clsTestAppointments.GetAppointmentBookingError(bookingInfo);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    btnSave.Enabled = false;
+                    MessageBox.Show(error, "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DataRow row = bookingInfo.Rows[0];
+                _IsRetakeTest = Convert.ToInt32(row["PreviousAppointmentCount"]) > 0;
+                _TestFees = Convert.ToDecimal(row["TestFees"]);
+                _RetakeFees = _IsRetakeTest ? Convert.ToDecimal(row["RetakeFees"]) : 0;
+                gbRetakeTest.Enabled = _IsRetakeTest;
+                lbFees.Text = _TestFees.ToString("0.##");
+                lbRFees.Text = _RetakeFees.ToString("0.##");
+                lbRtotalFees.Text = (_TestFees + _RetakeFees).ToString("0.##");
+                lbRAPPID.Text = _IsRetakeTest ? "Not created yet" : "N/A";
+                label2.Text = row["PreviousAppointmentCount"].ToString();
+                Text = lbTitle.Text + (_IsRetakeTest ? " - Retake Appointment" : " Appointment");
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!clsGlobal.IsLoggedIn() || clsGlobal.CurrentUser.UserID <= 0)
@@ -124,40 +163,65 @@ namespace DVLD
                 return;
             }
 
-            if (clsTestAppointments.IsThereAnActiveTestAppointment(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID))
+            btnSave.Enabled = false;
+            try
             {
-                MessageBox.Show("There is already an active appointment for this test.", "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                using (DataTable bookingInfo = clsTestAppointments.GetAppointmentBookingInfo(
+                    _LocalDrivingLicenseApplicationID, _TestTypeID))
+                {
+                    string error = clsTestAppointments.GetAppointmentBookingError(bookingInfo);
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        MessageBox.Show(error, "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    DataRow row = bookingInfo.Rows[0];
+                    bool isRetake = Convert.ToInt32(row["PreviousAppointmentCount"]) > 0;
+                    decimal retakeFees = isRetake ? Convert.ToDecimal(row["RetakeFees"]) : 0;
+                    if (isRetake != _IsRetakeTest || retakeFees != _RetakeFees ||
+                        Convert.ToDecimal(row["TestFees"]) != _TestFees)
+                    {
+                        LoadRetakeInfo();
+                        MessageBox.Show("The booking details or fees have changed. Review the updated amounts before saving again.",
+                            "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+
+                int newAppointmentID = clsTestAppointments.AddNewTestAppointment(
+                    _LocalDrivingLicenseApplicationID,
+                    _TestTypeID,
+                    guna2DateTimePicker1.Value,
+                    _TestFees,
+                    clsGlobal.CurrentUser.UserID,
+                    _RetakeFees,
+                    out int retakeTestApplicationID);
+
+                if (newAppointmentID <= 0)
+                {
+                    MessageBox.Show("The appointment could not be saved. Its booking conditions or fees may have changed. Please close this window and try again.",
+                        "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                lbRAPPID.Text = retakeTestApplicationID > 0 ? retakeTestApplicationID.ToString() : "N/A";
+                MessageBox.Show("The appointment was saved successfully." +
+                    (retakeTestApplicationID > 0 ? "\nRetake Application ID: " + retakeTestApplicationID : string.Empty),
+                    "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
             }
-
-            DataTable dtPreviousAppointments = clsTestAppointments.GetTestAppointments(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID);
-
-            if (dtPreviousAppointments.Rows.Count > 0)
+            catch (System.Data.SqlClient.SqlException)
             {
-                MessageBox.Show("A previous appointment exists. Complete the test result and retake flow before adding another appointment.", "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                MessageBox.Show("Saving could not be confirmed. Close this window and refresh the appointments before trying again.",
+                    "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            int newAppointmentID = clsTestAppointments.AddNewTestAppointment(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID,
-                guna2DateTimePicker1.Value,
-                _TestFees,
-                clsGlobal.CurrentUser.UserID);
-
-            if (newAppointmentID <= 0)
+            finally
             {
-                MessageBox.Show("The appointment could not be saved.", "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                if (!IsDisposed)
+                    btnSave.Enabled = true;
             }
-
-            MessageBox.Show("The appointment was saved successfully.", "Test Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            DialogResult = DialogResult.OK;
-            Close();
         }
     }
 }

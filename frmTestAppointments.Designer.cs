@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -35,8 +36,11 @@
             this.gbAppointments = new System.Windows.Forms.GroupBox();
             this.btnAddAppointment = new Guna.UI2.WinForms.Guna2Button();
             this.dgvAppointments = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.cmsAppointments = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.takeTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctrlVisionTestAppointment1 = new DVLD.ctrlVisionTestAppointment();
             this.gbAppointments.SuspendLayout();
+            this.cmsAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,6 +72,11 @@
             // 
             // dgvAppointments
             // 
+            this.dgvAppointments.AllowUserToAddRows = false;
+            this.dgvAppointments.MultiSelect = false;
+            this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAppointments.ContextMenuStrip = this.cmsAppointments;
+            this.dgvAppointments.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvAppointments_MouseDown);
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgvAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -124,6 +133,22 @@
             this.dgvAppointments.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvAppointments.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
+            // cmsAppointments
+            //
+            this.cmsAppointments.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.takeTestToolStripMenuItem});
+            this.cmsAppointments.Name = "cmsAppointments";
+            this.cmsAppointments.Size = new System.Drawing.Size(123, 26);
+            this.cmsAppointments.Opening += new System.ComponentModel.CancelEventHandler(this.cmsAppointments_Opening);
+            //
+            // takeTestToolStripMenuItem
+            //
+            this.takeTestToolStripMenuItem.Enabled = false;
+            this.takeTestToolStripMenuItem.Name = "takeTestToolStripMenuItem";
+            this.takeTestToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.takeTestToolStripMenuItem.Text = "Take Test";
+            this.takeTestToolStripMenuItem.Click += new System.EventHandler(this.takeTestToolStripMenuItem_Click);
+            //
             // ctrlVisionTestAppointment1
             // 
             this.ctrlVisionTestAppointment1.Location = new System.Drawing.Point(12, 12);
@@ -142,6 +167,7 @@
             this.Text = "Test Appointments";
             this.Load += new System.EventHandler(this.frmTestAppointments_Load);
             this.gbAppointments.ResumeLayout(false);
+            this.cmsAppointments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
             this.ResumeLayout(false);
 
@@ -153,5 +179,7 @@
         private System.Windows.Forms.GroupBox gbAppointments;
         private Guna.UI2.WinForms.Guna2Button btnAddAppointment;
         private Guna.UI2.WinForms.Guna2DataGridView dgvAppointments;
+        private System.Windows.Forms.ContextMenuStrip cmsAppointments;
+        private System.Windows.Forms.ToolStripMenuItem takeTestToolStripMenuItem;
     }
 }

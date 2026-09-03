@@ -65,33 +65,102 @@ namespace DVLD
             dgvAppointments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        private bool TryGetSelectedActiveTestAppointment(out int testAppointmentID)
+        {
+            testAppointmentID = -1;
+            DataGridViewRow row = dgvAppointments.CurrentRow;
+
+            if (row == null || row.IsNewRow || !row.Selected ||
+                !dgvAppointments.Columns.Contains("TestAppointmentID") ||
+                !dgvAppointments.Columns.Contains("IsLocked"))
+            {
+                return false;
+            }
+
+            object idValue = row.Cells["TestAppointmentID"].Value;
+            object lockedValue = row.Cells["IsLocked"].Value;
+
+            if (idValue == null || idValue == DBNull.Value ||
+                !int.TryParse(idValue.ToString(), out testAppointmentID) ||
+                testAppointmentID <= 0)
+            {
+                return false;
+            }
+
+            return lockedValue != null && lockedValue != DBNull.Value &&
+                bool.TryParse(lockedValue.ToString(), out bool isLocked) && !isLocked;
+        }
+
+        private void dgvAppointments_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            DataGridView.HitTestInfo hit = dgvAppointments.HitTest(e.X, e.Y);
+            dgvAppointments.ClearSelection();
+
+            if (hit.RowIndex < 0 || hit.ColumnIndex < 0 ||
+                dgvAppointments.Rows[hit.RowIndex].IsNewRow)
+            {
+                dgvAppointments.CurrentCell = null;
+                return;
+            }
+
+            dgvAppointments.CurrentCell = dgvAppointments.Rows[hit.RowIndex].Cells[hit.ColumnIndex];
+            dgvAppointments.Rows[hit.RowIndex].Selected = true;
+        }
+
+        private void cmsAppointments_Opening(object sender, CancelEventArgs e)
+        {
+            takeTestToolStripMenuItem.Enabled =
+                TryGetSelectedActiveTestAppointment(out int testAppointmentID);
+        }
+
+        private void takeTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!TryGetSelectedActiveTestAppointment(out int testAppointmentID))
+            {
+                MessageBox.Show("Please select a valid, unlocked appointment first.",
+                    "Take Test", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (frmTakeTest frm = new frmTakeTest(testAppointmentID))
+            {
+                frm.ShowDialog(this);
+            }
+        }
+
         private void btnAddAppointment_Click(object sender, EventArgs e)
         {
-            if (clsTestAppointments.IsThereAnActiveTestAppointment(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID))
+            try
             {
-                MessageBox.Show("There is already an active appointment for this test.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                using (DataTable bookingInfo = clsTestAppointments.GetAppointmentBookingInfo(
+                    _LocalDrivingLicenseApplicationID, _TestTypeID))
+                {
+                    string error = clsTestAppointments.GetAppointmentBookingError(bookingInfo);
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        MessageBox.Show(error, "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                using (frmAddTestAppointment addAppointmentForm = new frmAddTestAppointment(
+                    _LocalDrivingLicenseApplicationID, _TestTypeID))
+                {
+                    if (addAppointmentForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        initDGV();
+                    }
+                }
             }
-
-            DataTable dtPreviousAppointments = clsTestAppointments.GetTestAppointments(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID);
-
-            if (dtPreviousAppointments.Rows.Count > 0)
+            catch (System.Data.SqlClient.SqlException)
             {
-                MessageBox.Show("A previous appointment exists. Complete the test result and retake flow before adding another appointment.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            frmAddTestAppointment addAppointmentForm = new frmAddTestAppointment(
-                _LocalDrivingLicenseApplicationID,
-                _TestTypeID);
-
-            if (addAppointmentForm.ShowDialog() == DialogResult.OK)
-            {
-                initDGV();
+                MessageBox.Show("The appointments could not be loaded. Please refresh and try again.",
+                    "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
