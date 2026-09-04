@@ -100,6 +100,7 @@ namespace DVLD
                 visionTestToolStripMenuItem.Enabled = false;
                 schedyleWrittenTestToolStripMenuItem.Enabled = false;
                 scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
                 return;
             }
 
@@ -112,6 +113,7 @@ namespace DVLD
                 visionTestToolStripMenuItem.Enabled = false;
                 schedyleWrittenTestToolStripMenuItem.Enabled = false;
                 scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
                 return;
             }
 
@@ -129,12 +131,50 @@ namespace DVLD
                     visionTestPassed && !writtenTestPassed;
                 scheduleStreetTestToolStripMenuItem.Enabled =
                     visionTestPassed && writtenTestPassed && !streetTestPassed;
+                issueLicenseToolStripMenuItem.Enabled =
+                    DVLD_BusinessLayer.clsLicense.ValidateFirstTimeLicenseIssue(localApplicationID) ==
+                    DVLD_BusinessLayer.clsLicense.enFirstTimeLicenseIssueResult.Eligible;
             }
             catch (System.Data.SqlClient.SqlException)
             {
                 visionTestToolStripMenuItem.Enabled = false;
                 schedyleWrittenTestToolStripMenuItem.Enabled = false;
                 scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void issueLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
+                dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select an application first.", "Issue License",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            object value = dgvLocalDrivingLicenceApplication.CurrentRow
+                .Cells["LocalDrivingLicenseApplicationID"].Value;
+
+            if (value == null || value == DBNull.Value ||
+                !int.TryParse(value.ToString(), out int localApplicationID) ||
+                localApplicationID <= 0)
+            {
+                MessageBox.Show("The selected application ID is invalid.", "Issue License",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (frmIssueDriverLicenseFirstTime frm =
+                new frmIssueDriverLicenseFirstTime(localApplicationID))
+            {
+                frm.ShowDialog(this);
+                if (frm.LicenseIssued)
+                {
+                    initDGV();
+                    initFilter();
+                }
             }
         }
 

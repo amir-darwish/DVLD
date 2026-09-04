@@ -84,11 +84,11 @@
     <Compile Include="ctrlUserPersonInfo.Designer.cs">
       <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctrlVisionTestAppointment.cs">
+    <Compile Include="ctrlLocalDrivingLicenseApplicationInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctrlVisionTestAppointment.Designer.cs">
-      <DependentUpon>ctrlVisionTestAppointment.cs</DependentUpon>
+    <Compile Include="ctrlLocalDrivingLicenseApplicationInfo.Designer.cs">
+      <DependentUpon>ctrlLocalDrivingLicenseApplicationInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="fLogin.cs">
       <SubType>Form</SubType>
@@ -131,6 +131,12 @@
     </Compile>
     <Compile Include="frmEditTest.Designer.cs">
       <DependentUpon>frmEditTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmIssueDriverLicenseFirstTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIssueDriverLicenseFirstTime.Designer.cs">
+      <DependentUpon>frmIssueDriverLicenseFirstTime.cs</DependentUpon>
     </Compile>
     <Compile Include="frmLocalDrivingLicenceApplication.cs">
       <SubType>Form</SubType>
@@ -206,8 +212,8 @@
     <EmbeddedResource Include="ctrlUserPersonInfo.resx">
       <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctrlVisionTestAppointment.resx">
-      <DependentUpon>ctrlVisionTestAppointment.cs</DependentUpon>
+    <EmbeddedResource Include="ctrlLocalDrivingLicenseApplicationInfo.resx">
+      <DependentUpon>ctrlLocalDrivingLicenseApplicationInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fLogin.resx">
       <DependentUpon>fLogin.cs</DependentUpon>
@@ -229,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmEditTest.resx">
       <DependentUpon>frmEditTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIssueDriverLicenseFirstTime.resx">
+      <DependentUpon>frmIssueDriverLicenseFirstTime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLocalDrivingLicenceApplication.resx">
       <DependentUpon>frmLocalDrivingLicenceApplication.cs</DependentUpon>

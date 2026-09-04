@@ -33,13 +33,27 @@ namespace DVLD
             InitializeComponent();
             _LocalDrivingLicenseApplicationID = localDrivingLicenseApplicationID;
             _TestTypeID = testTypeID;
+            ctrlLocalDrivingLicenseApplicationInfo1.ViewPersonInfoRequested +=
+                ctrlLocalDrivingLicenseApplicationInfo1_ViewPersonInfoRequested;
 
         }
 
         private void frmTestAppointments_Load(object sender, EventArgs e)
         {
-            ctrlVisionTestAppointment1.LoadApplicationInfo(_LocalDrivingLicenseApplicationID);
+            ctrlLocalDrivingLicenseApplicationInfo1.LoadApplicationInfo(_LocalDrivingLicenseApplicationID);
             initDGV();
+        }
+
+        private void ctrlLocalDrivingLicenseApplicationInfo1_ViewPersonInfoRequested(object sender, EventArgs e)
+        {
+            int personID = ctrlLocalDrivingLicenseApplicationInfo1.ApplicantPersonID;
+            if (personID <= 0)
+                return;
+
+            using (frmShowPersonInfo frm = new frmShowPersonInfo(personID))
+            {
+                frm.ShowDialog(this);
+            }
         }
 
         private void initDGV()

@@ -38,7 +38,7 @@
             this.dgvAppointments = new Guna.UI2.WinForms.Guna2DataGridView();
             this.cmsAppointments = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.takeTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ctrlVisionTestAppointment1 = new DVLD.ctrlVisionTestAppointment();
+            this.ctrlLocalDrivingLicenseApplicationInfo1 = new DVLD.ctrlLocalDrivingLicenseApplicationInfo();
             this.gbAppointments.SuspendLayout();
             this.cmsAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
@@ -149,12 +149,12 @@
             this.takeTestToolStripMenuItem.Text = "Take Test";
             this.takeTestToolStripMenuItem.Click += new System.EventHandler(this.takeTestToolStripMenuItem_Click);
             //
-            // ctrlVisionTestAppointment1
+            // ctrlLocalDrivingLicenseApplicationInfo1
             // 
-            this.ctrlVisionTestAppointment1.Location = new System.Drawing.Point(12, 12);
-            this.ctrlVisionTestAppointment1.Name = "ctrlVisionTestAppointment1";
-            this.ctrlVisionTestAppointment1.Size = new System.Drawing.Size(704, 513);
-            this.ctrlVisionTestAppointment1.TabIndex = 0;
+            this.ctrlLocalDrivingLicenseApplicationInfo1.Location = new System.Drawing.Point(12, 12);
+            this.ctrlLocalDrivingLicenseApplicationInfo1.Name = "ctrlLocalDrivingLicenseApplicationInfo1";
+            this.ctrlLocalDrivingLicenseApplicationInfo1.Size = new System.Drawing.Size(704, 355);
+            this.ctrlLocalDrivingLicenseApplicationInfo1.TabIndex = 0;
             // 
             // frmTestAppointments
             // 
@@ -162,7 +162,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(701, 611);
             this.Controls.Add(this.gbAppointments);
-            this.Controls.Add(this.ctrlVisionTestAppointment1);
+            this.Controls.Add(this.ctrlLocalDrivingLicenseApplicationInfo1);
             this.Name = "frmTestAppointments";
             this.Text = "Test Appointments";
             this.Load += new System.EventHandler(this.frmTestAppointments_Load);
@@ -175,7 +175,7 @@
 
         #endregion
 
-        private ctrlVisionTestAppointment ctrlVisionTestAppointment1;
+        private ctrlLocalDrivingLicenseApplicationInfo ctrlLocalDrivingLicenseApplicationInfo1;
         private System.Windows.Forms.GroupBox gbAppointments;
         private Guna.UI2.WinForms.Guna2Button btnAddAppointment;
         private Guna.UI2.WinForms.Guna2DataGridView dgvAppointments;

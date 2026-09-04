@@ -42,7 +42,7 @@
             this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.ctrlFilter1 = new DVLD.ctrlFilter();
-            this.issueicenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.issueLicenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalDrivingLicenceApplication)).BeginInit();
             this.Menu.SuspendLayout();
@@ -122,7 +122,7 @@
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showApplicationDetailsToolStripMenuItem,
             this.sToolStripMenuItem,
-            this.issueicenceToolStripMenuItem});
+            this.issueLicenseToolStripMenuItem});
             this.Menu.Name = "Menu";
             this.Menu.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
             this.Menu.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
@@ -200,11 +200,13 @@
             this.ctrlFilter1.Size = new System.Drawing.Size(430, 64);
             this.ctrlFilter1.TabIndex = 2;
             // 
-            // issueicenceToolStripMenuItem
+            // issueLicenseToolStripMenuItem
             // 
-            this.issueicenceToolStripMenuItem.Name = "issueicenceToolStripMenuItem";
-            this.issueicenceToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.issueicenceToolStripMenuItem.Text = "Issue Driver Licence (First Time)";
+            this.issueLicenseToolStripMenuItem.Enabled = false;
+            this.issueLicenseToolStripMenuItem.Name = "issueLicenseToolStripMenuItem";
+            this.issueLicenseToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.issueLicenseToolStripMenuItem.Text = "Issue Driver License (First Time)";
+            this.issueLicenseToolStripMenuItem.Click += new System.EventHandler(this.issueLicenseToolStripMenuItem_Click);
             // 
             // btnAdd
             // 
@@ -255,7 +257,7 @@
         private System.Windows.Forms.ToolStripMenuItem visionTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem schedyleWrittenTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scheduleStreetTestToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem issueicenceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem issueLicenseToolStripMenuItem;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
     }
 }
