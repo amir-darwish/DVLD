@@ -35,13 +35,15 @@
             this.dgvLocalDrivingLicenceApplication = new Guna.UI2.WinForms.Guna2DataGridView();
             this.Menu = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.showApplicationDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.lblRecordsCount = new System.Windows.Forms.Label();
-            this.ctrlFilter1 = new DVLD.ctrlFilter();
             this.sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visionTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schedyleWrittenTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scheduleStreetTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.lblRecordsCount = new System.Windows.Forms.Label();
+            this.ctrlFilter1 = new DVLD.ctrlFilter();
+            this.issueicenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalDrivingLicenceApplication)).BeginInit();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
@@ -119,7 +121,8 @@
             // 
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showApplicationDetailsToolStripMenuItem,
-            this.sToolStripMenuItem});
+            this.sToolStripMenuItem,
+            this.issueicenceToolStripMenuItem});
             this.Menu.Name = "Menu";
             this.Menu.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
             this.Menu.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
@@ -130,14 +133,45 @@
             this.Menu.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
             this.Menu.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.Menu.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.Menu.Size = new System.Drawing.Size(206, 70);
+            this.Menu.Size = new System.Drawing.Size(241, 70);
             // 
             // showApplicationDetailsToolStripMenuItem
             // 
             this.showApplicationDetailsToolStripMenuItem.Name = "showApplicationDetailsToolStripMenuItem";
-            this.showApplicationDetailsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.showApplicationDetailsToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.showApplicationDetailsToolStripMenuItem.Text = "Show Application Details";
             this.showApplicationDetailsToolStripMenuItem.Click += new System.EventHandler(this.showApplicationDetailsToolStripMenuItem_Click);
+            // 
+            // sToolStripMenuItem
+            // 
+            this.sToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.visionTestToolStripMenuItem,
+            this.schedyleWrittenTestToolStripMenuItem,
+            this.scheduleStreetTestToolStripMenuItem});
+            this.sToolStripMenuItem.Name = "sToolStripMenuItem";
+            this.sToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.sToolStripMenuItem.Text = "Schedule Tests";
+            // 
+            // visionTestToolStripMenuItem
+            // 
+            this.visionTestToolStripMenuItem.Name = "visionTestToolStripMenuItem";
+            this.visionTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.visionTestToolStripMenuItem.Text = "Schedule Vision Test";
+            this.visionTestToolStripMenuItem.Click += new System.EventHandler(this.visionTestToolStripMenuItem_Click);
+            // 
+            // schedyleWrittenTestToolStripMenuItem
+            // 
+            this.schedyleWrittenTestToolStripMenuItem.Name = "schedyleWrittenTestToolStripMenuItem";
+            this.schedyleWrittenTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.schedyleWrittenTestToolStripMenuItem.Text = "Schedule Written Test";
+            this.schedyleWrittenTestToolStripMenuItem.Click += new System.EventHandler(this.scheduleWrittenTestToolStripMenuItem_Click);
+            // 
+            // scheduleStreetTestToolStripMenuItem
+            // 
+            this.scheduleStreetTestToolStripMenuItem.Name = "scheduleStreetTestToolStripMenuItem";
+            this.scheduleStreetTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.scheduleStreetTestToolStripMenuItem.Text = "Schedule Street Test";
+            this.scheduleStreetTestToolStripMenuItem.Click += new System.EventHandler(this.scheduleStreetTestToolStripMenuItem_Click);
             // 
             // guna2HtmlLabel2
             // 
@@ -166,42 +200,33 @@
             this.ctrlFilter1.Size = new System.Drawing.Size(430, 64);
             this.ctrlFilter1.TabIndex = 2;
             // 
-            // sToolStripMenuItem
+            // issueicenceToolStripMenuItem
             // 
-            this.sToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.visionTestToolStripMenuItem,
-            this.schedyleWrittenTestToolStripMenuItem,
-            this.scheduleStreetTestToolStripMenuItem});
-            this.sToolStripMenuItem.Name = "sToolStripMenuItem";
-            this.sToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.sToolStripMenuItem.Text = "Schedule Tests";
+            this.issueicenceToolStripMenuItem.Name = "issueicenceToolStripMenuItem";
+            this.issueicenceToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.issueicenceToolStripMenuItem.Text = "Issue Driver Licence (First Time)";
             // 
-            // visionTestToolStripMenuItem
+            // btnAdd
             // 
-            this.visionTestToolStripMenuItem.Name = "visionTestToolStripMenuItem";
-            this.visionTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.visionTestToolStripMenuItem.Text = "Schedule Vision Test";
-            this.visionTestToolStripMenuItem.Click += new System.EventHandler(this.visionTestToolStripMenuItem_Click);
-            // 
-            // scheduleWrittenTestToolStripMenuItem
-            // 
-            this.schedyleWrittenTestToolStripMenuItem.Name = "scheduleWrittenTestToolStripMenuItem";
-            this.schedyleWrittenTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.schedyleWrittenTestToolStripMenuItem.Text = "Schedule Written Test";
-            this.schedyleWrittenTestToolStripMenuItem.Click += new System.EventHandler(this.scheduleWrittenTestToolStripMenuItem_Click);
-            // 
-            // scheduleStreetTestToolStripMenuItem
-            // 
-            this.scheduleStreetTestToolStripMenuItem.Name = "scheduleStreetTestToolStripMenuItem";
-            this.scheduleStreetTestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.scheduleStreetTestToolStripMenuItem.Text = "Schedule Street Test";
-            this.scheduleStreetTestToolStripMenuItem.Click += new System.EventHandler(this.scheduleStreetTestToolStripMenuItem_Click);
+            this.btnAdd.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnAdd.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnAdd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnAdd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAdd.ForeColor = System.Drawing.Color.White;
+            this.btnAdd.Location = new System.Drawing.Point(643, 86);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(150, 45);
+            this.btnAdd.TabIndex = 5;
+            this.btnAdd.Text = "Add New Applciation";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // frmLocalDrivingLicenceApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 449);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.lblRecordsCount);
             this.Controls.Add(this.guna2HtmlLabel2);
             this.Controls.Add(this.ctrlFilter1);
@@ -230,5 +255,7 @@
         private System.Windows.Forms.ToolStripMenuItem visionTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem schedyleWrittenTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scheduleStreetTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem issueicenceToolStripMenuItem;
+        private Guna.UI2.WinForms.Guna2Button btnAdd;
     }
 }

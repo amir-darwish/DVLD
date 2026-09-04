@@ -19,6 +19,7 @@ namespace DVLD
         public frmLocalDrivingLicenceApplication()
         {
             InitializeComponent();
+            Menu.Opening += Menu_Opening;
         }
 
         private void guna2HtmlLabel1_Click(object sender, EventArgs e)
@@ -88,6 +89,55 @@ namespace DVLD
             OpenTestAppointmentsForSelectedApplication(StreetTestTypeID);
         }
 
+        private void Menu_Opening(object sender, CancelEventArgs e)
+        {
+            bool hasSelectedApplication =
+                dgvLocalDrivingLicenceApplication.CurrentRow != null &&
+                !dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow;
+
+            if (!hasSelectedApplication)
+            {
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+                return;
+            }
+
+            object value = dgvLocalDrivingLicenceApplication.CurrentRow
+                .Cells["LocalDrivingLicenseApplicationID"].Value;
+
+            if (value == null || value == DBNull.Value ||
+                !int.TryParse(value.ToString(), out int localApplicationID))
+            {
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+                return;
+            }
+
+            try
+            {
+                bool visionTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, VisionTestTypeID);
+                bool writtenTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, WrittenTestTypeID);
+                bool streetTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, StreetTestTypeID);
+
+                visionTestToolStripMenuItem.Enabled = !visionTestPassed;
+                schedyleWrittenTestToolStripMenuItem.Enabled =
+                    visionTestPassed && !writtenTestPassed;
+                scheduleStreetTestToolStripMenuItem.Enabled =
+                    visionTestPassed && writtenTestPassed && !streetTestPassed;
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+            }
+        }
+
         private void OpenTestAppointmentsForSelectedApplication(int testTypeID)
         {
             if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
@@ -117,6 +167,13 @@ namespace DVLD
                 testTypeID);
 
             appointmentsForm.ShowDialog();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmNewLocalDrivingLicenceApplication frm = new frmNewLocalDrivingLicenceApplication();
+            frm.ShowDialog();
+
         }
     }
 }

@@ -45,6 +45,8 @@ namespace DVLD
 
             lbDLID.Text = row["LocalDrivingLicenseApplicationID"].ToString();
             lbAppliedLic.Text = row["ClassName"].ToString();
+            lbPTests.Text = DVLD_BusinessLayer.clsTests
+                .GetPassedTestsCount(localApplicationID) + "/3";
             lbID.Text = row["ApplicationID"].ToString();
             lbStatus.Text = GetApplicationStatus(row["ApplicationStatus"]);
             lbFees.Text = Convert.ToDecimal(row["PaidFees"]).ToString("0.##");
