@@ -33,6 +33,78 @@ namespace DVLD_DataAccessLayer
             public decimal ClassFees { get; set; }
         }
 
+        public static DataTable GetDriverLicenseInfo(int licenseID)
+        {
+            DataTable licenseInfo = new DataTable();
+
+            const string query = @"
+                SELECT
+                    L.LicenseID,
+                    L.ApplicationID,
+                    L.DriverID,
+                    L.LicenseClass,
+                    LC.ClassName,
+                    L.IssueDate,
+                    L.ExpirationDate,
+                    L.Notes,
+                    L.PaidFees,
+                    L.IsActive,
+                    L.IssueReason,
+                    D.PersonID,
+                    P.NationalNo,
+                    CONCAT(
+                        P.FirstName, ' ', P.SecondName, ' ',
+                        ISNULL(P.ThirdName, ''), ' ', P.LastName
+                    ) AS ApplicantName,
+                    P.DateOfBirth,
+                    P.Gendor AS Gender,
+                    P.ImagePath,
+                    CASE WHEN EXISTS
+                    (
+                        SELECT 1
+                        FROM DetainedLicenses DL
+                        WHERE DL.LicenseID = L.LicenseID
+                          AND DL.IsReleased = 0
+                    ) THEN 1 ELSE 0 END AS IsDetained
+                FROM Licenses L
+                INNER JOIN Drivers D
+                    ON D.DriverID = L.DriverID
+                INNER JOIN People P
+                    ON P.PersonID = D.PersonID
+                INNER JOIN LicenseClasses LC
+                    ON LC.LicenseClassID = L.LicenseClass
+                WHERE L.LicenseID = @LicenseID";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                cmd.Parameters.Add("@LicenseID", SqlDbType.Int).Value = licenseID;
+                adapter.Fill(licenseInfo);
+            }
+
+            return licenseInfo;
+        }
+
+        public static int GetLicenseIDByApplicationID(int applicationID)
+        {
+            const string query = @"
+                SELECT TOP 1 LicenseID
+                FROM Licenses
+                WHERE ApplicationID = @ApplicationID
+                ORDER BY LicenseID DESC";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.Add("@ApplicationID", SqlDbType.Int).Value = applicationID;
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
+        }
+
         public static bool IsLicenseExistByApplicationID(int applicationID)
         {
             const string query = @"

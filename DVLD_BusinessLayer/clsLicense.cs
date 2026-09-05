@@ -22,6 +22,16 @@ namespace DVLD_BusinessLayer
             ApplicationCompletionFailed
         }
 
+        public static DataTable GetDriverLicenseInfo(int licenseID)
+        {
+            return clsLicenseData.GetDriverLicenseInfo(licenseID);
+        }
+
+        public static int GetLicenseIDByApplicationID(int applicationID)
+        {
+            return clsLicenseData.GetLicenseIDByApplicationID(applicationID);
+        }
+
         public static enFirstTimeLicenseIssueResult ValidateFirstTimeLicenseIssue(
             int localDrivingLicenseApplicationID)
         {

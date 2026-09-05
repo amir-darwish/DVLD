@@ -21,6 +21,7 @@ namespace DVLD
 
         public int ApplicationID { get; private set; } = -1;
         public int ApplicantPersonID { get; private set; } = -1;
+        public int LicenseID { get; private set; } = -1;
         public byte ApplicationStatus { get; private set; }
 
         public event EventHandler ViewPersonInfoRequested;
@@ -71,8 +72,10 @@ namespace DVLD
             lbDate.Text = FormatDate(row, "ApplicationDate");
             lbStDate.Text = FormatDate(row, "LastStatusDate");
             lbCreatedBy.Text = row["CreatedBy"].ToString();
+            LicenseID = DVLD_BusinessLayer.clsLicense
+                .GetLicenseIDByApplicationID(ApplicationID);
             llViewPersonInfo.Enabled = ApplicantPersonID > 0;
-            llShowLicenseInfo.Enabled = false;
+            llShowLicenseInfo.Enabled = LicenseID > 0;
 
             return true;
         }
@@ -82,6 +85,7 @@ namespace DVLD
             _LocalDrivingLicenseApplicationID = -1;
             ApplicationID = -1;
             ApplicantPersonID = -1;
+            LicenseID = -1;
             ApplicationStatus = 0;
 
             lbDLID.Text = "##";

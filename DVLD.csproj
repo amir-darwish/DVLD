@@ -78,6 +78,12 @@
     <Compile Include="ctrlFilter.Designer.cs">
       <DependentUpon>ctrlFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrlDriverLicenceInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlDriverLicenceInfo.Designer.cs">
+      <DependentUpon>ctrlDriverLicenceInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctrlUserPersonInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -162,6 +168,12 @@
     <Compile Include="frmShowPersonInfo.Designer.cs">
       <DependentUpon>frmShowPersonInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmShowDriverLicenceInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowDriverLicenceInfo.Designer.cs">
+      <DependentUpon>frmShowDriverLicenceInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmShowUserInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +221,9 @@
     <EmbeddedResource Include="ctrlFilter.resx">
       <DependentUpon>ctrlFilter.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ctrlDriverLicenceInfo.resx">
+      <DependentUpon>ctrlDriverLicenceInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ctrlUserPersonInfo.resx">
       <DependentUpon>ctrlUserPersonInfo.cs</DependentUpon>
     </EmbeddedResource>
@@ -250,6 +265,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmShowPersonInfo.resx">
       <DependentUpon>frmShowPersonInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowDriverLicenceInfo.resx">
+      <DependentUpon>frmShowDriverLicenceInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmShowUserInfo.resx">
       <DependentUpon>frmShowUserInfo.cs</DependentUpon>

@@ -35,6 +35,8 @@ namespace DVLD
             _TestTypeID = testTypeID;
             ctrlLocalDrivingLicenseApplicationInfo1.ViewPersonInfoRequested +=
                 ctrlLocalDrivingLicenseApplicationInfo1_ViewPersonInfoRequested;
+            ctrlLocalDrivingLicenseApplicationInfo1.ShowLicenseInfoRequested +=
+                ctrlLocalDrivingLicenseApplicationInfo1_ShowLicenseInfoRequested;
 
         }
 
@@ -51,6 +53,20 @@ namespace DVLD
                 return;
 
             using (frmShowPersonInfo frm = new frmShowPersonInfo(personID))
+            {
+                frm.ShowDialog(this);
+            }
+        }
+
+        private void ctrlLocalDrivingLicenseApplicationInfo1_ShowLicenseInfoRequested(
+            object sender, EventArgs e)
+        {
+            int licenseID = ctrlLocalDrivingLicenseApplicationInfo1.LicenseID;
+            if (licenseID <= 0)
+                return;
+
+            using (frmShowDriverLicenceInfo frm =
+                new frmShowDriverLicenceInfo(licenseID))
             {
                 frm.ShowDialog(this);
             }
