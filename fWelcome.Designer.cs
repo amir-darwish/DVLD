@@ -308,6 +308,7 @@
             this.internationalToolStripMenuItem.Name = "internationalToolStripMenuItem";
             this.internationalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.internationalToolStripMenuItem.Text = "International";
+            this.internationalToolStripMenuItem.Click += new System.EventHandler(this.internationalToolStripMenuItem_Click);
             // 
             // fWelcome
             // 

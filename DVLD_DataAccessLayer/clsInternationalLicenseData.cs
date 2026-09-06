@@ -38,13 +38,16 @@ namespace DVLD_DataAccessLayer
                 connection.Open();
                 const string query = @"SELECT il.InternationalLicenseID, il.ApplicationID, il.DriverID,
                                        il.IssuedUsingLocalLicenseID AS LicenseID, il.IssueDate, il.ExpirationDate, il.IsActive,
+                                       A.ApplicationDate, A.PaidFees, U.UserName AS CreatedByUserName,
                                        P.NationalNo, CONCAT(P.FirstName, ' ', P.SecondName, ' ',
                                        ISNULL(P.ThirdName, ''), ' ', P.LastName) AS ApplicantName,
                                        P.DateOfBirth, P.Gendor As Gender, P.ImagePath
                                     
                                 FROM dbo.InternationalLicenses AS il
+                                INNER JOIN dbo.Applications AS A ON il.ApplicationID = A.ApplicationID
                                 INNER JOIN dbo.Drivers AS D ON il.DriverID = D.DriverID
                                 INNER JOIN dbo.People AS P ON D.PersonID = P.PersonID
+                                LEFT JOIN dbo.Users AS U ON il.CreatedByUserID = U.UserID
                                 WHERE il.InternationalLicenseID = @InternationalLicenseID";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
