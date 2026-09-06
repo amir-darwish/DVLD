@@ -30,13 +30,64 @@ namespace DVLD_DataAccessLayer
             ApplicationCreationFailed,
             InternationalLicenseCreationFailed
         }
-        public static DataTable GetInternationalLicenseInfo(int licenseID)
+        public static DataTable GetInternationalLicenseInfo(int InternationalLicenseID)
         {
+            DataTable internalLicenseInfo;
             using (SqlConnection connection = new SqlConnection(clsDataAccsessSettings.ConnectionString))
             {
-
+                connection.Open();
+                const string query = @"SELECT il.InternationalLicenseID, il.ApplicationID, il.DriverID,
+                                       il.IssuedUsingLocalLicenseID AS LicenseID, il.IssueDate, il.ExpirationDate, il.IsActive,
+                                       P.NationalNo, CONCAT(P.FirstName, ' ', P.SecondName, ' ',
+                                       ISNULL(P.ThirdName, ''), ' ', P.LastName) AS ApplicantName,
+                                       P.DateOfBirth, P.Gendor As Gender, P.ImagePath
+                                    
+                                FROM dbo.InternationalLicenses AS il
+                                INNER JOIN dbo.Drivers AS D ON il.DriverID = D.DriverID
+                                INNER JOIN dbo.People AS P ON D.PersonID = P.PersonID
+                                WHERE il.InternationalLicenseID = @InternationalLicenseID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@InternationalLicenseID", InternationalLicenseID);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        internalLicenseInfo = new DataTable();
+                        adapter.Fill(internalLicenseInfo);
+                    }
+                }
             }
+
+            return internalLicenseInfo;
         }
+
+        public static DataTable GetAllInternationalLicenses()
+        {
+            DataTable AllLicenses;
+            using (SqlConnection connection = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                connection.Open();
+                const string query = @"SELECT il.InternationalLicenseID, il.ApplicationID, il.DriverID,
+                                       il.IssuedUsingLocalLicenseID AS LocalLicenseID, il.IssueDate, il.ExpirationDate, il.IsActive,
+                                       P.NationalNo, CONCAT(P.FirstName, ' ', P.SecondName, ' ',
+                                       ISNULL(P.ThirdName, ''), ' ', P.LastName) AS ApplicantName,
+                                       P.DateOfBirth, P.Gendor As Gender, P.ImagePath
+                                FROM dbo.InternationalLicenses AS il
+                                INNER JOIN dbo.Drivers AS D ON il.DriverID = D.DriverID
+                                INNER JOIN dbo.People AS P ON D.PersonID = P.PersonID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        AllLicenses = new DataTable();
+                        adapter.Fill(AllLicenses);
+                    }
+                }
+            }
+
+            return AllLicenses; 
+        }
+
+
 
         public static enIssueInternationalLicenseResult CreateInternationalLicense(int localLicenseID, int createdByUserID, out int internationalLicenseID)
         {
