@@ -122,6 +122,11 @@ namespace DVLD
             frmLocal.ShowDialog();
         }
 
+        private void internationalDriverLicenceApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new frmInternationalLicenses().ShowDialog();
+        }
+
         private void localToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new frmNewLocalDrivingLicenceApplication().ShowDialog();
