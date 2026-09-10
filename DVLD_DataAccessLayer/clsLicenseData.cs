@@ -18,9 +18,26 @@ namespace DVLD_DataAccessLayer
             ApplicationCompletionFailed
         }
 
+        public enum enRenewLicenseDataResult
+        {
+            Success,
+            InvalidUser,
+            LicenseNotFound,
+            LicenseInactive,
+            LicenseDetained,
+            LicenseNotExpired,
+            ApplicationTypeNotFound,
+            ApplicationCreationFailed,
+            LicenseCreationFailed,
+            OldLicenseDeactivationFailed,
+            ApplicationCompletionFailed
+        }
+
         private const byte NewApplicationStatus = 1;
         private const byte CompletedApplicationStatus = 3;
         private const byte FirstTimeIssueReason = 1;
+        private const byte RenewIssueReason = 2;
+        private const int RenewApplicationTypeID = 2;
         private const int RequiredPassedTestsCount = 3;
 
         private class clsFirstTimeLicenseIssueData
@@ -29,6 +46,18 @@ namespace DVLD_DataAccessLayer
             public int ApplicantPersonID { get; set; }
             public int LicenseClassID { get; set; }
             public byte ApplicationStatus { get; set; }
+            public int ValidityLength { get; set; }
+            public decimal ClassFees { get; set; }
+        }
+
+        private class clsRenewLicenseData
+        {
+            public int DriverID { get; set; }
+            public int PersonID { get; set; }
+            public int LicenseClassID { get; set; }
+            public DateTime ExpirationDate { get; set; }
+            public bool IsActive { get; set; }
+            public bool IsDetained { get; set; }
             public int ValidityLength { get; set; }
             public decimal ClassFees { get; set; }
         }
@@ -65,7 +94,9 @@ namespace DVLD_DataAccessLayer
                         FROM DetainedLicenses DL
                         WHERE DL.LicenseID = L.LicenseID
                           AND DL.IsReleased = 0
-                    ) THEN 1 ELSE 0 END AS IsDetained
+                    ) THEN 1 ELSE 0 END AS IsDetained,
+                    LC.ClassFees,
+                    LC.DefaultValidityLength
                 FROM Licenses L
                 INNER JOIN Drivers D
                     ON D.DriverID = L.DriverID
@@ -118,6 +149,355 @@ namespace DVLD_DataAccessLayer
                 cmd.Parameters.Add("@ApplicationID", SqlDbType.Int).Value = applicationID;
                 conn.Open();
                 return cmd.ExecuteScalar() != null;
+            }
+        }
+
+        public static DataTable GetRenewedLicenseInfo(int renewedLicenseID)
+        {
+            DataTable renewalInfo = new DataTable();
+
+            const string query = @"
+                SELECT
+                    A.ApplicationID,
+                    L.LicenseID AS RenewedLicenseID,
+                    A.ApplicationDate,
+                    L.IssueDate,
+                    L.ExpirationDate,
+                    A.PaidFees AS ApplicationFees,
+                    L.PaidFees AS LicenseFees,
+                    U.UserName AS CreatedBy
+                FROM Licenses L
+                INNER JOIN Applications A
+                    ON A.ApplicationID = L.ApplicationID
+                INNER JOIN Users U
+                    ON U.UserID = A.CreatedByUserID
+                WHERE L.LicenseID = @RenewedLicenseID
+                  AND A.ApplicationTypeID = @RenewApplicationTypeID";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                cmd.Parameters.Add("@RenewedLicenseID", SqlDbType.Int).Value = renewedLicenseID;
+                cmd.Parameters.Add("@RenewApplicationTypeID", SqlDbType.Int).Value =
+                    RenewApplicationTypeID;
+                adapter.Fill(renewalInfo);
+            }
+
+            return renewalInfo;
+        }
+
+        public static enRenewLicenseDataResult RenewLicense(
+            int oldLicenseID, string notes, int createdByUserID,
+            out int renewalApplicationID, out int renewedLicenseID)
+        {
+            renewalApplicationID = -1;
+            renewedLicenseID = -1;
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction transaction = conn.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (!IsActiveUser(createdByUserID, conn, transaction))
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.InvalidUser;
+                        }
+
+                        clsRenewLicenseData licenseData;
+                        if (!TryGetRenewLicenseData(oldLicenseID, conn, transaction,
+                            out licenseData))
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.LicenseNotFound;
+                        }
+
+                        if (!licenseData.IsActive)
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.LicenseInactive;
+                        }
+
+                        if (licenseData.IsDetained)
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.LicenseDetained;
+                        }
+
+                        DateTime operationDate = DateTime.Now;
+                        if (licenseData.ExpirationDate.Date > operationDate.Date)
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.LicenseNotExpired;
+                        }
+
+                        decimal applicationFees;
+                        if (!TryGetApplicationFees(RenewApplicationTypeID, conn,
+                            transaction, out applicationFees))
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.ApplicationTypeNotFound;
+                        }
+
+                        renewalApplicationID = CreateRenewalApplication(
+                            licenseData.PersonID, applicationFees, createdByUserID,
+                            operationDate, conn, transaction);
+                        if (renewalApplicationID <= 0)
+                        {
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.ApplicationCreationFailed;
+                        }
+
+                        renewedLicenseID = CreateRenewedLicense(renewalApplicationID,
+                            licenseData, notes, createdByUserID, operationDate,
+                            conn, transaction);
+                        if (renewedLicenseID <= 0)
+                        {
+                            renewalApplicationID = -1;
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.LicenseCreationFailed;
+                        }
+
+                        if (!DeactivateOldLicense(oldLicenseID, conn, transaction))
+                        {
+                            renewalApplicationID = -1;
+                            renewedLicenseID = -1;
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.OldLicenseDeactivationFailed;
+                        }
+
+                        if (!CompleteApplication(renewalApplicationID, conn, transaction))
+                        {
+                            renewalApplicationID = -1;
+                            renewedLicenseID = -1;
+                            transaction.Rollback();
+                            return enRenewLicenseDataResult.ApplicationCompletionFailed;
+                        }
+
+                        transaction.Commit();
+                        return enRenewLicenseDataResult.Success;
+                    }
+                    catch
+                    {
+                        renewalApplicationID = -1;
+                        renewedLicenseID = -1;
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private static bool IsActiveUser(int userID, SqlConnection conn,
+            SqlTransaction transaction)
+        {
+            const string query = @"
+                SELECT TOP 1 1
+                FROM Users WITH (HOLDLOCK)
+                WHERE UserID = @UserID
+                  AND IsActive = 1";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
+                return cmd.ExecuteScalar() != null;
+            }
+        }
+
+        private static bool TryGetRenewLicenseData(int oldLicenseID,
+            SqlConnection conn, SqlTransaction transaction,
+            out clsRenewLicenseData licenseData)
+        {
+            licenseData = null;
+
+            const string query = @"
+                SELECT
+                    L.DriverID,
+                    D.PersonID,
+                    L.LicenseClass,
+                    L.ExpirationDate,
+                    L.IsActive,
+                    LC.DefaultValidityLength,
+                    LC.ClassFees,
+                    CASE WHEN EXISTS
+                    (
+                        SELECT 1
+                        FROM DetainedLicenses DL WITH (UPDLOCK, HOLDLOCK)
+                        WHERE DL.LicenseID = L.LicenseID
+                          AND DL.IsReleased = 0
+                    ) THEN 1 ELSE 0 END AS IsDetained
+                FROM Licenses L WITH (UPDLOCK, HOLDLOCK)
+                INNER JOIN Drivers D
+                    ON D.DriverID = L.DriverID
+                INNER JOIN LicenseClasses LC
+                    ON LC.LicenseClassID = L.LicenseClass
+                WHERE L.LicenseID = @OldLicenseID";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@OldLicenseID", SqlDbType.Int).Value = oldLicenseID;
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        return false;
+
+                    licenseData = new clsRenewLicenseData
+                    {
+                        DriverID = Convert.ToInt32(reader["DriverID"]),
+                        PersonID = Convert.ToInt32(reader["PersonID"]),
+                        LicenseClassID = Convert.ToInt32(reader["LicenseClass"]),
+                        ExpirationDate = Convert.ToDateTime(reader["ExpirationDate"]),
+                        IsActive = Convert.ToBoolean(reader["IsActive"]),
+                        IsDetained = Convert.ToBoolean(reader["IsDetained"]),
+                        ValidityLength = Convert.ToInt32(reader["DefaultValidityLength"]),
+                        ClassFees = Convert.ToDecimal(reader["ClassFees"])
+                    };
+
+                    return true;
+                }
+            }
+        }
+
+        private static bool TryGetApplicationFees(int applicationTypeID,
+            SqlConnection conn, SqlTransaction transaction, out decimal applicationFees)
+        {
+            applicationFees = 0;
+
+            const string query = @"
+                SELECT ApplicationFees
+                FROM ApplicationTypes WITH (HOLDLOCK)
+                WHERE ApplicationTypeID = @ApplicationTypeID";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@ApplicationTypeID", SqlDbType.Int).Value =
+                    applicationTypeID;
+                object result = cmd.ExecuteScalar();
+                if (result == null || result == DBNull.Value)
+                    return false;
+
+                applicationFees = Convert.ToDecimal(result);
+                return true;
+            }
+        }
+
+        private static int CreateRenewalApplication(int personID,
+            decimal applicationFees, int createdByUserID, DateTime operationDate,
+            SqlConnection conn, SqlTransaction transaction)
+        {
+            const string query = @"
+                INSERT INTO Applications
+                (
+                    ApplicantPersonID,
+                    ApplicationDate,
+                    ApplicationTypeID,
+                    ApplicationStatus,
+                    LastStatusDate,
+                    PaidFees,
+                    CreatedByUserID
+                )
+                VALUES
+                (
+                    @ApplicantPersonID,
+                    @ApplicationDate,
+                    @ApplicationTypeID,
+                    @ApplicationStatus,
+                    @LastStatusDate,
+                    @PaidFees,
+                    @CreatedByUserID
+                );
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@ApplicantPersonID", SqlDbType.Int).Value = personID;
+                cmd.Parameters.Add("@ApplicationDate", SqlDbType.DateTime).Value = operationDate;
+                cmd.Parameters.Add("@ApplicationTypeID", SqlDbType.Int).Value =
+                    RenewApplicationTypeID;
+                cmd.Parameters.Add("@ApplicationStatus", SqlDbType.TinyInt).Value =
+                    NewApplicationStatus;
+                cmd.Parameters.Add("@LastStatusDate", SqlDbType.DateTime).Value = operationDate;
+                cmd.Parameters.Add("@PaidFees", SqlDbType.SmallMoney).Value = applicationFees;
+                cmd.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = createdByUserID;
+
+                object result = cmd.ExecuteScalar();
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
+        }
+
+        private static int CreateRenewedLicense(int renewalApplicationID,
+            clsRenewLicenseData licenseData, string notes, int createdByUserID,
+            DateTime issueDate, SqlConnection conn, SqlTransaction transaction)
+        {
+            const string query = @"
+                INSERT INTO Licenses
+                (
+                    ApplicationID,
+                    DriverID,
+                    LicenseClass,
+                    IssueDate,
+                    ExpirationDate,
+                    Notes,
+                    PaidFees,
+                    IsActive,
+                    IssueReason,
+                    CreatedByUserID
+                )
+                VALUES
+                (
+                    @ApplicationID,
+                    @DriverID,
+                    @LicenseClass,
+                    @IssueDate,
+                    @ExpirationDate,
+                    @Notes,
+                    @PaidFees,
+                    1,
+                    @IssueReason,
+                    @CreatedByUserID
+                );
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@ApplicationID", SqlDbType.Int).Value =
+                    renewalApplicationID;
+                cmd.Parameters.Add("@DriverID", SqlDbType.Int).Value = licenseData.DriverID;
+                cmd.Parameters.Add("@LicenseClass", SqlDbType.Int).Value =
+                    licenseData.LicenseClassID;
+                cmd.Parameters.Add("@IssueDate", SqlDbType.DateTime).Value = issueDate;
+                cmd.Parameters.Add("@ExpirationDate", SqlDbType.DateTime).Value =
+                    issueDate.AddYears(licenseData.ValidityLength);
+                cmd.Parameters.Add("@Notes", SqlDbType.NVarChar, 1000).Value =
+                    string.IsNullOrWhiteSpace(notes) ? (object)DBNull.Value : notes.Trim();
+                cmd.Parameters.Add("@PaidFees", SqlDbType.SmallMoney).Value =
+                    licenseData.ClassFees;
+                cmd.Parameters.Add("@IssueReason", SqlDbType.TinyInt).Value = RenewIssueReason;
+                cmd.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = createdByUserID;
+
+                object result = cmd.ExecuteScalar();
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
+        }
+
+        private static bool DeactivateOldLicense(int oldLicenseID,
+            SqlConnection conn, SqlTransaction transaction)
+        {
+            const string query = @"
+                UPDATE Licenses
+                SET IsActive = 0
+                WHERE LicenseID = @OldLicenseID
+                  AND IsActive = 1";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@OldLicenseID", SqlDbType.Int).Value = oldLicenseID;
+                return cmd.ExecuteNonQuery() == 1;
             }
         }
 

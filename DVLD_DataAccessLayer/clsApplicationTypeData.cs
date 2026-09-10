@@ -46,5 +46,27 @@ namespace DVLD_DataAccessLayer
                 }
             }
         }
+
+        public static decimal? GetApplicationFees(int applicationTypeID)
+        {
+            decimal? result = null;
+
+            using(SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                conn.Open();
+                string query = "SELECT ApplicationFees FROM ApplicationTypes WHERE ApplicationTypeID = @ApplicationTypeID";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeID);
+                    object value = cmd.ExecuteScalar();
+                    if (value != null && value != DBNull.Value)
+                    {
+                        result = Convert.ToDecimal(value);
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

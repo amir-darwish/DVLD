@@ -11,6 +11,11 @@ namespace DVLD
         public int LicenseID { get; private set; } = -1;
         public int DriverID { get; private set; } = -1;
         public int PersonID { get; private set; } = -1;
+        public decimal ClassFees { get; private set; }
+        public int DefaultValidityLength { get; private set; }
+        public bool IsActive { get; private set; }
+        public bool IsDetained { get; private set; }
+        public DateTime ExpirationDate { get; private set; } = DateTime.MinValue;
 
         public ctrlDriverLicenceInfo()
         {
@@ -40,6 +45,11 @@ namespace DVLD
             LicenseID = Convert.ToInt32(row["LicenseID"]);
             DriverID = Convert.ToInt32(row["DriverID"]);
             PersonID = Convert.ToInt32(row["PersonID"]);
+            ClassFees = Convert.ToDecimal(row["ClassFees"]);
+            DefaultValidityLength = Convert.ToInt32(row["DefaultValidityLength"]);
+            IsActive = Convert.ToBoolean(row["IsActive"]);
+            IsDetained = Convert.ToBoolean(row["IsDetained"]);
+            ExpirationDate = Convert.ToDateTime(row["ExpirationDate"]);
 
             lbClass.Text = row["ClassName"].ToString();
             lbName.Text = row["ApplicantName"].ToString();
@@ -52,11 +62,11 @@ namespace DVLD
                 string.IsNullOrWhiteSpace(row["Notes"].ToString())
                     ? "No Notes"
                     : row["Notes"].ToString();
-            lbIsActive.Text = Convert.ToBoolean(row["IsActive"]) ? "Yes" : "No";
+            lbIsActive.Text = IsActive ? "Yes" : "No";
             lbDateOfBirth.Text = FormatDate(row, "DateOfBirth");
             lbDriverID.Text = DriverID.ToString();
-            lbExpirationDate.Text = FormatDate(row, "ExpirationDate");
-            lbIsDetained.Text = Convert.ToBoolean(row["IsDetained"]) ? "Yes" : "No";
+            lbExpirationDate.Text = ExpirationDate.ToString("dd/MM/yyyy");
+            lbIsDetained.Text = IsDetained ? "Yes" : "No";
 
             LoadPersonImage(row);
             return true;
@@ -103,6 +113,11 @@ namespace DVLD
             LicenseID = -1;
             DriverID = -1;
             PersonID = -1;
+            ClassFees = 0;
+            DefaultValidityLength = 0;
+            IsActive = false;
+            IsDetained = false;
+            ExpirationDate = DateTime.MinValue;
 
             lbClass.Text = "##";
             lbName.Text = "##";

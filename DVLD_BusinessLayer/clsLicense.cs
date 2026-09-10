@@ -32,6 +32,58 @@ namespace DVLD_BusinessLayer
             return clsLicenseData.GetLicenseIDByApplicationID(applicationID);
         }
 
+        public static DataTable GetRenewedLicenseInfo(int renewedLicenseID)
+        {
+            return clsLicenseData.GetRenewedLicenseInfo(renewedLicenseID);
+        }
+
+        public static enRenewLicenseResult RenewLicense(
+            int oldLicenseID, string notes, int createdByUserID,
+            out int renewalApplicationID, out int renewedLicenseID)
+        {
+            renewalApplicationID = -1;
+            renewedLicenseID = -1;
+
+            if (oldLicenseID <= 0)
+                return enRenewLicenseResult.InvalidLicenseID;
+
+            if (createdByUserID <= 0)
+                return enRenewLicenseResult.InvalidUser;
+
+            if (!string.IsNullOrEmpty(notes) && notes.Length > 1000)
+                return enRenewLicenseResult.NotesTooLong;
+
+            clsLicenseData.enRenewLicenseDataResult dataResult =
+                clsLicenseData.RenewLicense(oldLicenseID, notes, createdByUserID,
+                    out renewalApplicationID, out renewedLicenseID);
+
+            switch (dataResult)
+            {
+                case clsLicenseData.enRenewLicenseDataResult.Success:
+                    return enRenewLicenseResult.Success;
+                case clsLicenseData.enRenewLicenseDataResult.InvalidUser:
+                    return enRenewLicenseResult.InvalidUser;
+                case clsLicenseData.enRenewLicenseDataResult.LicenseNotFound:
+                    return enRenewLicenseResult.LicenseNotFound;
+                case clsLicenseData.enRenewLicenseDataResult.LicenseInactive:
+                    return enRenewLicenseResult.LicenseInactive;
+                case clsLicenseData.enRenewLicenseDataResult.LicenseDetained:
+                    return enRenewLicenseResult.LicenseDetained;
+                case clsLicenseData.enRenewLicenseDataResult.LicenseNotExpired:
+                    return enRenewLicenseResult.LicenseNotExpired;
+                case clsLicenseData.enRenewLicenseDataResult.ApplicationTypeNotFound:
+                    return enRenewLicenseResult.ApplicationTypeNotFound;
+                case clsLicenseData.enRenewLicenseDataResult.ApplicationCreationFailed:
+                    return enRenewLicenseResult.ApplicationCreationFailed;
+                case clsLicenseData.enRenewLicenseDataResult.LicenseCreationFailed:
+                    return enRenewLicenseResult.LicenseCreationFailed;
+                case clsLicenseData.enRenewLicenseDataResult.OldLicenseDeactivationFailed:
+                    return enRenewLicenseResult.OldLicenseDeactivationFailed;
+                default:
+                    return enRenewLicenseResult.ApplicationCompletionFailed;
+            }
+        }
+
         public static enFirstTimeLicenseIssueResult ValidateFirstTimeLicenseIssue(
             int localDrivingLicenseApplicationID)
         {
