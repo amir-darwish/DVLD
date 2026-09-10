@@ -43,6 +43,10 @@
             this.btnApplications = new Guna.UI2.WinForms.Guna2Button();
             this.contextMenuStrip_Applications = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.drivingLicineceServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newDrivingLicenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.localToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.internationalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renewDriverLicenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.localDriverLicenceApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.internationalDriverLicenceApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,9 +54,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsTestType = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDrivers = new Guna.UI2.WinForms.Guna2Button();
-            this.newDrivingLicenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.localToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.internationalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guna2ContainerControl1.SuspendLayout();
             this.contextMenuStrip_Settings.SuspendLayout();
             this.contextMenuStrip_Applications.SuspendLayout();
@@ -216,10 +217,41 @@
             // drivingLicineceServiceToolStripMenuItem
             // 
             this.drivingLicineceServiceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newDrivingLicenceToolStripMenuItem});
+            this.newDrivingLicenceToolStripMenuItem,
+            this.renewDriverLicenseToolStripMenuItem});
             this.drivingLicineceServiceToolStripMenuItem.Name = "drivingLicineceServiceToolStripMenuItem";
             this.drivingLicineceServiceToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.drivingLicineceServiceToolStripMenuItem.Text = "Driving Licinece Service";
+            // 
+            // newDrivingLicenceToolStripMenuItem
+            // 
+            this.newDrivingLicenceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.localToolStripMenuItem,
+            this.internationalToolStripMenuItem});
+            this.newDrivingLicenceToolStripMenuItem.Name = "newDrivingLicenceToolStripMenuItem";
+            this.newDrivingLicenceToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.newDrivingLicenceToolStripMenuItem.Text = "New Driving Licence";
+            // 
+            // localToolStripMenuItem
+            // 
+            this.localToolStripMenuItem.Name = "localToolStripMenuItem";
+            this.localToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.localToolStripMenuItem.Text = "Local";
+            this.localToolStripMenuItem.Click += new System.EventHandler(this.localToolStripMenuItem_Click);
+            // 
+            // internationalToolStripMenuItem
+            // 
+            this.internationalToolStripMenuItem.Name = "internationalToolStripMenuItem";
+            this.internationalToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.internationalToolStripMenuItem.Text = "International";
+            this.internationalToolStripMenuItem.Click += new System.EventHandler(this.internationalToolStripMenuItem_Click);
+            // 
+            // renewDriverLicenseToolStripMenuItem
+            // 
+            this.renewDriverLicenseToolStripMenuItem.Name = "renewDriverLicenseToolStripMenuItem";
+            this.renewDriverLicenseToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.renewDriverLicenseToolStripMenuItem.Text = "Renew Driving License";
+            this.renewDriverLicenseToolStripMenuItem.Click += new System.EventHandler(this.renewDriverLicenseToolStripMenuItem_Click);
             // 
             // manageToolStripMenuItem
             // 
@@ -288,29 +320,6 @@
             this.btnDrivers.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.btnDrivers.Click += new System.EventHandler(this.btnDrivers_Click);
             // 
-            // newDrivingLicenceToolStripMenuItem
-            // 
-            this.newDrivingLicenceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.localToolStripMenuItem,
-            this.internationalToolStripMenuItem});
-            this.newDrivingLicenceToolStripMenuItem.Name = "newDrivingLicenceToolStripMenuItem";
-            this.newDrivingLicenceToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.newDrivingLicenceToolStripMenuItem.Text = "New Driving Licence";
-            // 
-            // localToolStripMenuItem
-            // 
-            this.localToolStripMenuItem.Name = "localToolStripMenuItem";
-            this.localToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.localToolStripMenuItem.Text = "Local";
-            this.localToolStripMenuItem.Click += new System.EventHandler(this.localToolStripMenuItem_Click);
-            // 
-            // internationalToolStripMenuItem
-            // 
-            this.internationalToolStripMenuItem.Name = "internationalToolStripMenuItem";
-            this.internationalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.internationalToolStripMenuItem.Text = "International";
-            this.internationalToolStripMenuItem.Click += new System.EventHandler(this.internationalToolStripMenuItem_Click);
-            // 
             // fWelcome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,5 +362,6 @@
         private System.Windows.Forms.ToolStripMenuItem newDrivingLicenceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem internationalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renewDriverLicenseToolStripMenuItem;
     }
 }

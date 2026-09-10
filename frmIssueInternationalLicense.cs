@@ -148,5 +148,10 @@ namespace DVLD
         {
             Close();
         }
+
+        private void frmIssueInternationalLicense_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -136,5 +136,12 @@ namespace DVLD
         {
             new frmIssueInternationalLicense().ShowDialog();
         }
+
+        private void renewDriverLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmRenewDrivingLicense frmRenewDrivingLicense = new frmRenewDrivingLicense();
+            frmRenewDrivingLicense.ShowDialog();
+
+        }
     }
 }

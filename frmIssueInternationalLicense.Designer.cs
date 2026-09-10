@@ -27,12 +27,11 @@ namespace DVLD
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F,
-                System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.DarkRed;
             this.lblTitle.Location = new System.Drawing.Point(225, 25);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(450, 36);
+            this.lblTitle.Size = new System.Drawing.Size(480, 36);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "International License Application";
             // 
@@ -99,8 +98,10 @@ namespace DVLD
             this.Name = "frmIssueInternationalLicense";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New International License Application";
+            this.Load += new System.EventHandler(this.frmIssueInternationalLicense_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
