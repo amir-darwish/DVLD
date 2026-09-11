@@ -33,11 +33,31 @@ namespace DVLD_DataAccessLayer
             ApplicationCompletionFailed
         }
 
+        public enum enReplaceLicenseDataResult
+        {
+            Success,
+            InvalidUser,
+            InvalidReplacementType,
+            LicenseNotFound,
+            LicenseInactive,
+            LicenseDetained,
+            LicenseExpired,
+            ApplicationTypeNotFound,
+            ApplicationCreationFailed,
+            LicenseCreationFailed,
+            OldLicenseDeactivationFailed,
+            ApplicationCompletionFailed
+        }
+
         private const byte NewApplicationStatus = 1;
         private const byte CompletedApplicationStatus = 3;
         private const byte FirstTimeIssueReason = 1;
         private const byte RenewIssueReason = 2;
+        private const byte DamagedIssueReason = 3;
+        private const byte LostIssueReason = 4;
         private const int RenewApplicationTypeID = 2;
+        private const int LostReplacementApplicationTypeID = 3;
+        private const int DamagedReplacementApplicationTypeID = 4;
         private const int RequiredPassedTestsCount = 3;
 
         private class clsFirstTimeLicenseIssueData
@@ -60,6 +80,17 @@ namespace DVLD_DataAccessLayer
             public bool IsDetained { get; set; }
             public int ValidityLength { get; set; }
             public decimal ClassFees { get; set; }
+        }
+
+        private class clsReplacementLicenseData
+        {
+            public int DriverID { get; set; }
+            public int PersonID { get; set; }
+            public int LicenseClassID { get; set; }
+            public DateTime ExpirationDate { get; set; }
+            public bool IsActive { get; set; }
+            public bool IsDetained { get; set; }
+            public string Notes { get; set; }
         }
 
         public static DataTable GetDriverLicenseInfo(int licenseID)
@@ -185,6 +216,318 @@ namespace DVLD_DataAccessLayer
             }
 
             return renewalInfo;
+        }
+
+        public static DataTable GetReplacedLicenseInfo(int replacedLicenseID)
+        {
+            DataTable replacementInfo = new DataTable();
+
+            const string query = @"
+                SELECT
+                    A.ApplicationID,
+                    L.LicenseID AS ReplacedLicenseID,
+                    A.ApplicationDate,
+                    A.PaidFees AS ApplicationFees,
+                    A.ApplicationTypeID,
+                    U.UserName AS CreatedBy
+                FROM Licenses L
+                INNER JOIN Applications A
+                    ON A.ApplicationID = L.ApplicationID
+                INNER JOIN Users U
+                    ON U.UserID = A.CreatedByUserID
+                WHERE L.LicenseID = @ReplacedLicenseID
+                  AND A.ApplicationTypeID IN
+                      (@LostApplicationTypeID, @DamagedApplicationTypeID)";
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                cmd.Parameters.Add("@ReplacedLicenseID", SqlDbType.Int).Value =
+                    replacedLicenseID;
+                cmd.Parameters.Add("@LostApplicationTypeID", SqlDbType.Int).Value =
+                    LostReplacementApplicationTypeID;
+                cmd.Parameters.Add("@DamagedApplicationTypeID", SqlDbType.Int).Value =
+                    DamagedReplacementApplicationTypeID;
+                adapter.Fill(replacementInfo);
+            }
+
+            return replacementInfo;
+        }
+
+        public static enReplaceLicenseDataResult ReplaceLicense(
+            int oldLicenseID, int applicationTypeID, byte issueReason,
+            int createdByUserID, out int replacementApplicationID,
+            out int replacedLicenseID)
+        {
+            replacementApplicationID = -1;
+            replacedLicenseID = -1;
+
+            using (SqlConnection conn = new SqlConnection(clsDataAccsessSettings.ConnectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction transaction = conn.BeginTransaction(IsolationLevel.Serializable))
+                {
+                    try
+                    {
+                        if (!IsValidReplacementMapping(applicationTypeID, issueReason))
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.InvalidReplacementType;
+                        }
+
+                        if (!IsActiveUser(createdByUserID, conn, transaction))
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.InvalidUser;
+                        }
+
+                        clsReplacementLicenseData licenseData;
+                        if (!TryGetReplacementLicenseData(oldLicenseID, conn, transaction,
+                            out licenseData))
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.LicenseNotFound;
+                        }
+
+                        if (!licenseData.IsActive)
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.LicenseInactive;
+                        }
+
+                        if (licenseData.IsDetained)
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.LicenseDetained;
+                        }
+
+                        DateTime operationDate = DateTime.Now;
+                        if (licenseData.ExpirationDate.Date <= operationDate.Date)
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.LicenseExpired;
+                        }
+
+                        decimal applicationFees;
+                        if (!TryGetApplicationFees(applicationTypeID, conn, transaction,
+                            out applicationFees))
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.ApplicationTypeNotFound;
+                        }
+
+                        replacementApplicationID = CreateReplacementApplication(
+                            licenseData.PersonID, applicationTypeID, applicationFees,
+                            createdByUserID, operationDate, conn, transaction);
+                        if (replacementApplicationID <= 0)
+                        {
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.ApplicationCreationFailed;
+                        }
+
+                        replacedLicenseID = CreateReplacementLicense(
+                            replacementApplicationID, licenseData, issueReason,
+                            createdByUserID, operationDate, conn, transaction);
+                        if (replacedLicenseID <= 0)
+                        {
+                            replacementApplicationID = -1;
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.LicenseCreationFailed;
+                        }
+
+                        if (!DeactivateOldLicense(oldLicenseID, conn, transaction))
+                        {
+                            replacementApplicationID = -1;
+                            replacedLicenseID = -1;
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.OldLicenseDeactivationFailed;
+                        }
+
+                        if (!CompleteApplication(replacementApplicationID, conn, transaction))
+                        {
+                            replacementApplicationID = -1;
+                            replacedLicenseID = -1;
+                            transaction.Rollback();
+                            return enReplaceLicenseDataResult.ApplicationCompletionFailed;
+                        }
+
+                        transaction.Commit();
+                        return enReplaceLicenseDataResult.Success;
+                    }
+                    catch
+                    {
+                        replacementApplicationID = -1;
+                        replacedLicenseID = -1;
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private static bool IsValidReplacementMapping(int applicationTypeID,
+            byte issueReason)
+        {
+            return applicationTypeID == LostReplacementApplicationTypeID &&
+                   issueReason == LostIssueReason ||
+                   applicationTypeID == DamagedReplacementApplicationTypeID &&
+                   issueReason == DamagedIssueReason;
+        }
+
+        private static bool TryGetReplacementLicenseData(int oldLicenseID,
+            SqlConnection conn, SqlTransaction transaction,
+            out clsReplacementLicenseData licenseData)
+        {
+            licenseData = null;
+
+            const string query = @"
+                SELECT
+                    L.DriverID,
+                    D.PersonID,
+                    L.LicenseClass,
+                    L.ExpirationDate,
+                    L.IsActive,
+                    L.Notes,
+                    CASE WHEN EXISTS
+                    (
+                        SELECT 1
+                        FROM DetainedLicenses DL WITH (UPDLOCK, HOLDLOCK)
+                        WHERE DL.LicenseID = L.LicenseID
+                          AND DL.IsReleased = 0
+                    ) THEN 1 ELSE 0 END AS IsDetained
+                FROM Licenses L WITH (UPDLOCK, HOLDLOCK)
+                INNER JOIN Drivers D
+                    ON D.DriverID = L.DriverID
+                WHERE L.LicenseID = @OldLicenseID";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@OldLicenseID", SqlDbType.Int).Value = oldLicenseID;
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        return false;
+
+                    licenseData = new clsReplacementLicenseData
+                    {
+                        DriverID = Convert.ToInt32(reader["DriverID"]),
+                        PersonID = Convert.ToInt32(reader["PersonID"]),
+                        LicenseClassID = Convert.ToInt32(reader["LicenseClass"]),
+                        ExpirationDate = Convert.ToDateTime(reader["ExpirationDate"]),
+                        IsActive = Convert.ToBoolean(reader["IsActive"]),
+                        IsDetained = Convert.ToBoolean(reader["IsDetained"]),
+                        Notes = reader["Notes"] == DBNull.Value
+                            ? null
+                            : reader["Notes"].ToString()
+                    };
+
+                    return true;
+                }
+            }
+        }
+
+        private static int CreateReplacementApplication(int personID,
+            int applicationTypeID, decimal applicationFees, int createdByUserID,
+            DateTime operationDate, SqlConnection conn, SqlTransaction transaction)
+        {
+            const string query = @"
+                INSERT INTO Applications
+                (
+                    ApplicantPersonID,
+                    ApplicationDate,
+                    ApplicationTypeID,
+                    ApplicationStatus,
+                    LastStatusDate,
+                    PaidFees,
+                    CreatedByUserID
+                )
+                VALUES
+                (
+                    @ApplicantPersonID,
+                    @ApplicationDate,
+                    @ApplicationTypeID,
+                    @ApplicationStatus,
+                    @LastStatusDate,
+                    @PaidFees,
+                    @CreatedByUserID
+                );
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@ApplicantPersonID", SqlDbType.Int).Value = personID;
+                cmd.Parameters.Add("@ApplicationDate", SqlDbType.DateTime).Value = operationDate;
+                cmd.Parameters.Add("@ApplicationTypeID", SqlDbType.Int).Value =
+                    applicationTypeID;
+                cmd.Parameters.Add("@ApplicationStatus", SqlDbType.TinyInt).Value =
+                    NewApplicationStatus;
+                cmd.Parameters.Add("@LastStatusDate", SqlDbType.DateTime).Value = operationDate;
+                cmd.Parameters.Add("@PaidFees", SqlDbType.SmallMoney).Value = applicationFees;
+                cmd.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = createdByUserID;
+
+                object result = cmd.ExecuteScalar();
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
+        }
+
+        private static int CreateReplacementLicense(int replacementApplicationID,
+            clsReplacementLicenseData licenseData, byte issueReason,
+            int createdByUserID, DateTime issueDate, SqlConnection conn,
+            SqlTransaction transaction)
+        {
+            const string query = @"
+                INSERT INTO Licenses
+                (
+                    ApplicationID,
+                    DriverID,
+                    LicenseClass,
+                    IssueDate,
+                    ExpirationDate,
+                    Notes,
+                    PaidFees,
+                    IsActive,
+                    IssueReason,
+                    CreatedByUserID
+                )
+                VALUES
+                (
+                    @ApplicationID,
+                    @DriverID,
+                    @LicenseClass,
+                    @IssueDate,
+                    @ExpirationDate,
+                    @Notes,
+                    @PaidFees,
+                    1,
+                    @IssueReason,
+                    @CreatedByUserID
+                );
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+            {
+                cmd.Parameters.Add("@ApplicationID", SqlDbType.Int).Value =
+                    replacementApplicationID;
+                cmd.Parameters.Add("@DriverID", SqlDbType.Int).Value = licenseData.DriverID;
+                cmd.Parameters.Add("@LicenseClass", SqlDbType.Int).Value =
+                    licenseData.LicenseClassID;
+                cmd.Parameters.Add("@IssueDate", SqlDbType.DateTime).Value = issueDate;
+                cmd.Parameters.Add("@ExpirationDate", SqlDbType.DateTime).Value =
+                    licenseData.ExpirationDate;
+                cmd.Parameters.Add("@Notes", SqlDbType.NVarChar, 1000).Value =
+                    string.IsNullOrWhiteSpace(licenseData.Notes)
+                        ? (object)DBNull.Value
+                        : licenseData.Notes.Trim();
+                cmd.Parameters.Add("@PaidFees", SqlDbType.SmallMoney).Value = 0m;
+                cmd.Parameters.Add("@IssueReason", SqlDbType.TinyInt).Value = issueReason;
+                cmd.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = createdByUserID;
+
+                object result = cmd.ExecuteScalar();
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
         }
 
         public static enRenewLicenseDataResult RenewLicense(

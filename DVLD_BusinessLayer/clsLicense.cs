@@ -37,6 +37,76 @@ namespace DVLD_BusinessLayer
             return clsLicenseData.GetRenewedLicenseInfo(renewedLicenseID);
         }
 
+        public static DataTable GetReplacedLicenseInfo(int replacedLicenseID)
+        {
+            return clsLicenseData.GetReplacedLicenseInfo(replacedLicenseID);
+        }
+
+        public static enReplaceLicenseResult ReplaceLicense(
+            int oldLicenseID, enLicenseReplacementType replacementType,
+            int createdByUserID, out int replacementApplicationID,
+            out int replacedLicenseID)
+        {
+            replacementApplicationID = -1;
+            replacedLicenseID = -1;
+
+            if (oldLicenseID <= 0)
+                return enReplaceLicenseResult.InvalidLicenseID;
+
+            if (createdByUserID <= 0)
+                return enReplaceLicenseResult.InvalidUser;
+
+            int applicationTypeID;
+            byte issueReason;
+
+            switch (replacementType)
+            {
+                case enLicenseReplacementType.Lost:
+                    applicationTypeID = 3;
+                    issueReason = 4;
+                    break;
+                case enLicenseReplacementType.Damaged:
+                    applicationTypeID = 4;
+                    issueReason = 3;
+                    break;
+                default:
+                    return enReplaceLicenseResult.InvalidReplacementType;
+            }
+
+            clsLicenseData.enReplaceLicenseDataResult dataResult =
+                clsLicenseData.ReplaceLicense(oldLicenseID, applicationTypeID,
+                    issueReason, createdByUserID, out replacementApplicationID,
+                    out replacedLicenseID);
+
+            switch (dataResult)
+            {
+                case clsLicenseData.enReplaceLicenseDataResult.Success:
+                    return enReplaceLicenseResult.Success;
+                case clsLicenseData.enReplaceLicenseDataResult.InvalidUser:
+                    return enReplaceLicenseResult.InvalidUser;
+                case clsLicenseData.enReplaceLicenseDataResult.InvalidReplacementType:
+                    return enReplaceLicenseResult.InvalidReplacementType;
+                case clsLicenseData.enReplaceLicenseDataResult.LicenseNotFound:
+                    return enReplaceLicenseResult.LicenseNotFound;
+                case clsLicenseData.enReplaceLicenseDataResult.LicenseInactive:
+                    return enReplaceLicenseResult.LicenseInactive;
+                case clsLicenseData.enReplaceLicenseDataResult.LicenseDetained:
+                    return enReplaceLicenseResult.LicenseDetained;
+                case clsLicenseData.enReplaceLicenseDataResult.LicenseExpired:
+                    return enReplaceLicenseResult.LicenseExpired;
+                case clsLicenseData.enReplaceLicenseDataResult.ApplicationTypeNotFound:
+                    return enReplaceLicenseResult.ApplicationTypeNotFound;
+                case clsLicenseData.enReplaceLicenseDataResult.ApplicationCreationFailed:
+                    return enReplaceLicenseResult.ApplicationCreationFailed;
+                case clsLicenseData.enReplaceLicenseDataResult.LicenseCreationFailed:
+                    return enReplaceLicenseResult.LicenseCreationFailed;
+                case clsLicenseData.enReplaceLicenseDataResult.OldLicenseDeactivationFailed:
+                    return enReplaceLicenseResult.OldLicenseDeactivationFailed;
+                default:
+                    return enReplaceLicenseResult.ApplicationCompletionFailed;
+            }
+        }
+
         public static enRenewLicenseResult RenewLicense(
             int oldLicenseID, string notes, int createdByUserID,
             out int renewalApplicationID, out int renewedLicenseID)

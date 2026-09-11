@@ -143,5 +143,14 @@ namespace DVLD
             frmRenewDrivingLicense.ShowDialog();
 
         }
+
+        private void replacementForDamagedOrLostLicensesToolStripMenuItem_Click(
+            object sender, EventArgs e)
+        {
+            using (frmReplacementLicense frm = new frmReplacementLicense())
+            {
+                frm.ShowDialog(this);
+            }
+        }
     }
 }

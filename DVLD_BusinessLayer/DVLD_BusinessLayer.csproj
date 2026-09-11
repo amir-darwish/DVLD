@@ -44,6 +44,8 @@
     <Compile Include="clsApplication.cs" />
     <Compile Include="clsApplicationType.cs" />
     <Compile Include="clsCountry.cs" />
+    <Compile Include="enLicenseReplacementType.cs" />
+    <Compile Include="enReplaceLicenseResult.cs" />
     <Compile Include="enRenewLicenseResult.cs" />
     <Compile Include="clsLicenseClass.cs" />
     <Compile Include="clsLicense.cs" />
