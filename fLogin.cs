@@ -9,8 +9,10 @@ namespace DVLD
     public partial class fLogin : Form
     {
 
-        // Path to the file where login information will be stored -> to change it to dynamic path later
-        private static readonly string LoginInfoPath = @"C:\Users\Utilisateur\Desktop\DVLD\_login.txt";
+        private static readonly string LoginInfoPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "DVLD",
+            "login.txt");
 
         public fLogin()
         {
@@ -65,31 +67,68 @@ namespace DVLD
         }
         private void LoadLoginInfo()
         {
-            if (!File.Exists(LoginInfoPath))
+            try
             {
-                return;
+                if (!File.Exists(LoginInfoPath))
+                {
+                    return;
+                }
+
+                string username = File.ReadAllText(LoginInfoPath).Trim();
+                if (string.IsNullOrEmpty(username))
+                {
+                    return;
+                }
+
+                tbUsername.Text = username;
+                cbRememberMe.Checked = true;
+                tbPassword.Focus();
             }
-               
-
-            string[] lines = File.ReadAllLines(LoginInfoPath);
-
-            if (lines.Length < 2)
-                return;
-
-            tbUsername.Text = lines[0];
-            tbPassword.Text = lines[1];
-            cbRememberMe.Checked = true;
-
-            Login(false);
+            catch (IOException)
+            {
+                // Login must remain available if preferences cannot be read.
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Login must remain available if preferences cannot be read.
+            }
         }
 
         private void SaveLoginInfo()
         {
-            File.WriteAllLines(LoginInfoPath, new string[]
+            try
             {
-                tbUsername.Text,
-                tbPassword.Text
-            });
+                string directoryPath = Path.GetDirectoryName(LoginInfoPath);
+                Directory.CreateDirectory(directoryPath);
+                File.WriteAllText(LoginInfoPath, tbUsername.Text.Trim());
+            }
+            catch (IOException)
+            {
+                // Remember Me must not prevent a successful login.
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Remember Me must not prevent a successful login.
+            }
+        }
+
+        private void ClearLoginInfo()
+        {
+            try
+            {
+                if (File.Exists(LoginInfoPath))
+                {
+                    File.Delete(LoginInfoPath);
+                }
+            }
+            catch (IOException)
+            {
+                // Login must remain available if preferences cannot be cleared.
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Login must remain available if preferences cannot be cleared.
+            }
         }
 
 
@@ -102,6 +141,10 @@ namespace DVLD
                 if (cbRememberMe.Checked)
                 {
                    SaveLoginInfo();
+                }
+                else
+                {
+                    ClearLoginInfo();
                 }
                     
 

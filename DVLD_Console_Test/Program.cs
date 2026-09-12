@@ -106,9 +106,9 @@ namespace DVLD_Console_Test
         //    }
         //}
 
-        static void testLogin()
+        static void testLogin(string username, string password)
         {
-            clsUser person = clsUser.ValidateUser("admin", "1234");
+            clsUser person = clsUser.ValidateUser(username, password);
 
             if (person != null)
             {
@@ -121,9 +121,9 @@ namespace DVLD_Console_Test
             }
         }
 
-        static void testCreateUser()
+        static void testCreateUser(int personID, string username, string password)
         {
-            bool isCreated = clsUser.CreateUser(1, "newuser", "password123");
+            bool isCreated = clsUser.CreateUser(personID, username, password);
             if (isCreated)
             {
                 Console.WriteLine("User created successfully.");
