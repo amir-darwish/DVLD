@@ -122,9 +122,35 @@ namespace DVLD
             frmLocal.ShowDialog();
         }
 
+        private void internationalDriverLicenceApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new frmInternationalLicenses().ShowDialog();
+        }
+
         private void localToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new frmNewLocalDrivingLicenceApplication().ShowDialog();
+        }
+
+        private void internationalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new frmIssueInternationalLicense().ShowDialog();
+        }
+
+        private void renewDriverLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmRenewDrivingLicense frmRenewDrivingLicense = new frmRenewDrivingLicense();
+            frmRenewDrivingLicense.ShowDialog();
+
+        }
+
+        private void replacementForDamagedOrLostLicensesToolStripMenuItem_Click(
+            object sender, EventArgs e)
+        {
+            using (frmReplacementLicense frm = new frmReplacementLicense())
+            {
+                frm.ShowDialog(this);
+            }
         }
     }
 }

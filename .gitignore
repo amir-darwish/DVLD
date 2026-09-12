@@ -262,6 +262,8 @@ ServiceFabricBackup/
 *.rptproj.bak
 
 # SQL Server files
+*.bak
+*.bacpac
 *.mdf
 *.ldf
 *.ndf
@@ -363,4 +365,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Login 
-._login.txt
+_login.txt

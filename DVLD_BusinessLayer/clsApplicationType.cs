@@ -27,6 +27,11 @@ namespace DVLD_BusinessLayer
             return clsApplicationTypeData.EditeApplicationType(applicationTypeID, applicationTypeName, fee);
         }
 
+        public static decimal? GetApplicationFees(int applicationTypeID)
+        {
+            return clsApplicationTypeData.GetApplicationFees(applicationTypeID);
+        }
+
     }
 }
 

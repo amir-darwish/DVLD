@@ -12,9 +12,14 @@ namespace DVLD
 {
     public partial class frmLocalDrivingLicenceApplication : Form
     {
+        private const int VisionTestTypeID = 1;
+        private const int WrittenTestTypeID = 2;
+        private const int StreetTestTypeID = 3;
+
         public frmLocalDrivingLicenceApplication()
         {
             InitializeComponent();
+            Menu.Opening += Menu_Opening;
         }
 
         private void guna2HtmlLabel1_Click(object sender, EventArgs e)
@@ -65,10 +70,37 @@ namespace DVLD
 
         private void showApplicationDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
-                dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
+            OpenTestAppointmentsForSelectedApplication(VisionTestTypeID);
+
+        } 
+
+        private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(VisionTestTypeID);
+        }
+
+        private void scheduleWrittenTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(WrittenTestTypeID);
+        }
+
+        private void scheduleStreetTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenTestAppointmentsForSelectedApplication(StreetTestTypeID);
+        }
+
+        private void Menu_Opening(object sender, CancelEventArgs e)
+        {
+            bool hasSelectedApplication =
+                dgvLocalDrivingLicenceApplication.CurrentRow != null &&
+                !dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow;
+
+            if (!hasSelectedApplication)
             {
-                MessageBox.Show("Please select an application first.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
                 return;
             }
 
@@ -78,13 +110,110 @@ namespace DVLD
             if (value == null || value == DBNull.Value ||
                 !int.TryParse(value.ToString(), out int localApplicationID))
             {
-                MessageBox.Show("The selected application ID is invalid.", "Application Details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
                 return;
             }
 
-            frmVisionTestAppointments detailsForm = new frmVisionTestAppointments(localApplicationID);
-            detailsForm.ShowDialog();
+            try
+            {
+                bool visionTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, VisionTestTypeID);
+                bool writtenTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, WrittenTestTypeID);
+                bool streetTestPassed = DVLD_BusinessLayer.clsTests
+                    .IsTestPassed(localApplicationID, StreetTestTypeID);
 
-        } 
+                visionTestToolStripMenuItem.Enabled = !visionTestPassed;
+                schedyleWrittenTestToolStripMenuItem.Enabled =
+                    visionTestPassed && !writtenTestPassed;
+                scheduleStreetTestToolStripMenuItem.Enabled =
+                    visionTestPassed && writtenTestPassed && !streetTestPassed;
+                issueLicenseToolStripMenuItem.Enabled =
+                    DVLD_BusinessLayer.clsLicense.ValidateFirstTimeLicenseIssue(localApplicationID) ==
+                    DVLD_BusinessLayer.clsLicense.enFirstTimeLicenseIssueResult.Eligible;
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                visionTestToolStripMenuItem.Enabled = false;
+                schedyleWrittenTestToolStripMenuItem.Enabled = false;
+                scheduleStreetTestToolStripMenuItem.Enabled = false;
+                issueLicenseToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void issueLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
+                dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select an application first.", "Issue License",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            object value = dgvLocalDrivingLicenceApplication.CurrentRow
+                .Cells["LocalDrivingLicenseApplicationID"].Value;
+
+            if (value == null || value == DBNull.Value ||
+                !int.TryParse(value.ToString(), out int localApplicationID) ||
+                localApplicationID <= 0)
+            {
+                MessageBox.Show("The selected application ID is invalid.", "Issue License",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (frmIssueDriverLicenseFirstTime frm =
+                new frmIssueDriverLicenseFirstTime(localApplicationID))
+            {
+                frm.ShowDialog(this);
+                if (frm.LicenseIssued)
+                {
+                    initDGV();
+                    initFilter();
+                }
+            }
+        }
+
+        private void OpenTestAppointmentsForSelectedApplication(int testTypeID)
+        {
+            if (dgvLocalDrivingLicenceApplication.CurrentRow == null ||
+                dgvLocalDrivingLicenceApplication.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select an application first.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            object value = dgvLocalDrivingLicenceApplication.CurrentRow
+                .Cells["LocalDrivingLicenseApplicationID"].Value;
+
+            if (value == null || value == DBNull.Value ||
+                !int.TryParse(value.ToString(), out int localApplicationID))
+            {
+                MessageBox.Show("The selected application ID is invalid.", "Test Appointments", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            OpenTestAppointments(localApplicationID, testTypeID);
+        }
+
+        private void OpenTestAppointments(int localApplicationID, int testTypeID)
+        {
+            frmTestAppointments appointmentsForm = new frmTestAppointments(
+                localApplicationID,
+                testTypeID);
+
+            appointmentsForm.ShowDialog();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmNewLocalDrivingLicenceApplication frm = new frmNewLocalDrivingLicenceApplication();
+            frm.ShowDialog();
+
+        }
     }
 }

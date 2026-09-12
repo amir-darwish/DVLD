@@ -1,6 +1,6 @@
 ﻿namespace DVLD
 {
-    partial class ctrlVisionTestAppointment
+    partial class ctrlLocalDrivingLicenseApplicationInfo
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.llShowLicenseInfo = new System.Windows.Forms.LinkLabel();
             this.lbPTests = new System.Windows.Forms.Label();
             this.lbAppliedLic = new System.Windows.Forms.Label();
             this.lbDLID = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.llViewPersonInfo = new System.Windows.Forms.LinkLabel();
             this.lbCreatedBy = new System.Windows.Forms.Label();
             this.lbStDate = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
@@ -58,6 +60,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.llShowLicenseInfo);
             this.groupBox1.Controls.Add(this.lbPTests);
             this.groupBox1.Controls.Add(this.lbAppliedLic);
             this.groupBox1.Controls.Add(this.lbDLID);
@@ -70,6 +73,18 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Driving License Application Info";
+            // 
+            // llShowLicenseInfo
+            // 
+            this.llShowLicenseInfo.AutoSize = true;
+            this.llShowLicenseInfo.Enabled = false;
+            this.llShowLicenseInfo.Location = new System.Drawing.Point(95, 57);
+            this.llShowLicenseInfo.Name = "llShowLicenseInfo";
+            this.llShowLicenseInfo.Size = new System.Drawing.Size(95, 13);
+            this.llShowLicenseInfo.TabIndex = 6;
+            this.llShowLicenseInfo.TabStop = true;
+            this.llShowLicenseInfo.Text = "Show License Info";
+            this.llShowLicenseInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llShowLicenseInfo_LinkClicked);
             // 
             // lbPTests
             // 
@@ -133,6 +148,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.llViewPersonInfo);
             this.groupBox2.Controls.Add(this.lbCreatedBy);
             this.groupBox2.Controls.Add(this.lbStDate);
             this.groupBox2.Controls.Add(this.lbDate);
@@ -151,10 +167,22 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(19, 149);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(661, 346);
+            this.groupBox2.Size = new System.Drawing.Size(661, 207);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Application Basic Info";
+            // 
+            // llViewPersonInfo
+            // 
+            this.llViewPersonInfo.AutoSize = true;
+            this.llViewPersonInfo.Enabled = false;
+            this.llViewPersonInfo.Location = new System.Drawing.Point(526, 174);
+            this.llViewPersonInfo.Name = "llViewPersonInfo";
+            this.llViewPersonInfo.Size = new System.Drawing.Size(90, 13);
+            this.llViewPersonInfo.TabIndex = 21;
+            this.llViewPersonInfo.TabStop = true;
+            this.llViewPersonInfo.Text = "View Person Info";
+            this.llViewPersonInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llViewPersonInfo_LinkClicked);
             // 
             // lbCreatedBy
             // 
@@ -316,15 +344,14 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "App ID :";
             // 
-            // ctrlVisionTestAppointment
+            // ctrlLocalDrivingLicenseApplicationInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "ctrlVisionTestAppointment";
-            this.Size = new System.Drawing.Size(704, 513);
-            this.Load += new System.EventHandler(this.ctrlVisionTestAppointment_Load);
+            this.Name = "ctrlLocalDrivingLicenseApplicationInfo";
+            this.Size = new System.Drawing.Size(704, 375);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -359,5 +386,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.LinkLabel llShowLicenseInfo;
+        private System.Windows.Forms.LinkLabel llViewPersonInfo;
     }
 }
